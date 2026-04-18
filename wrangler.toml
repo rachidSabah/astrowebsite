@@ -3,11 +3,10 @@ main = "./dist/_worker.js"
 compatibility_date = "2024-11-01"
 # compatibility_flags = ["nodejs_compat"]
 
-# D1 Database binding - uncomment and set real database_id after creating the DB
-# [[d1_databases]]
-# binding = "DB"
-# database_name = "infohas-academy-db"
-# database_id = ""
+[[d1_databases]]
+binding = "DB"
+database_name = "infohas-academy-db"
+database_id = "515491a2-10d6-4acf-b161-98678ac19255"
 
 [vars]
 SITE_URL = "https://astro-lqq.pages.dev"
