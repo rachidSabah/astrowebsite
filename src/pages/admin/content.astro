@@ -3,7 +3,8 @@ import Layout from '../../layouts/Layout.astro';
 import { getDB, getAllPages } from '../../lib/db';
 import { requireAuth } from '../../lib/auth';
 
-const auth = await requireAuth(Astro.request, getDB(Astro));
+const env = (Astro.locals as any)?.runtime?.env;
+const auth = await requireAuth(Astro.request, getDB(Astro), env);
 if (!auth) return Astro.redirect('/admin/login');
 
 const db = getDB(Astro);
