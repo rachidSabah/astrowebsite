@@ -3,14 +3,14 @@ import cloudflare from '@astrojs/cloudflare';
 import tailwind from '@astrojs/tailwind';
 
 export default defineConfig({
-  output: 'server',
+  output: 'hybrid',
   adapter: cloudflare({
     platformProxy: {
       enabled: true
     }
   }),
   integrations: [tailwind()],
-  site: 'https://infohas-academy.pages.dev',
+  site: 'https://astro-lqq.pages.dev',
   vite: {
     ssr: {
       noExternal: []

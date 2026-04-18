@@ -1,13 +1,9 @@
-import type { D1Database } from '@cloudflare/workers-types';
-
-export interface Env {
-  DB: D1Database;
-  [key: string]: string;
-}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type D1Database = any;
 
 // Helper to get D1 from Astro context
-export function getDB(Astro: { locals: { runtime: { env: { DB: D1Database } } } }): D1Database {
-  return Astro.locals.runtime.env.DB;
+export function getDB(Astro: any): D1Database {
+  return Astro?.locals?.runtime?.env?.DB;
 }
 
 // ============ PAGES CONTENT CRUD ============

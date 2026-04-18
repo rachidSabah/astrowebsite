@@ -1,30 +1,35 @@
-import { defineMiddleware } from 'astro:middleware';
-import { getRedirect, incrementRedirectHitCount } from './lib/db';
-import type { D1Database } from '@cloudflare/workers-types';
+import type { MiddlewareHandler } from 'astro';
 
-export const onRequest = defineMiddleware(async ({ request, locals, next }, { routePattern }) => {
+export const onRequest: MiddlewareHandler = async ({ request, locals }, next) => {
   const url = new URL(request.url);
   const path = url.pathname;
 
-  // Skip for assets, API routes, and files with extensions
+  // Skip for assets, API routes, and static files
   if (
     path.startsWith('/_astro') ||
     path.startsWith('/api') ||
     path.startsWith('/_image') ||
-    path.includes('.') // static files like .css, .js, .png, etc.
+    path.includes('.')
   ) {
     return next();
   }
 
-  // Only check redirects for non-admin paths
+  // Only check redirects for non-admin paths when D1 is available
   if (!path.startsWith('/admin')) {
     try {
-      const db = (locals.runtime?.env as any)?.DB as D1Database | undefined;
-      if (db) {
-        const redirect = await getRedirect(db, path);
+      const env = (locals as any)?.runtime?.env;
+      const db: any = env?.DB;
+      if (db && typeof db.prepare === 'function') {
+        const redirect = await db
+          .prepare('SELECT * FROM redirects WHERE source_path = ? AND is_active = 1')
+          .bind(path)
+          .first();
+
         if (redirect) {
-          // Increment hit count (fire and forget)
-          incrementRedirectHitCount(db, redirect.id as number).catch(() => {});
+          db.prepare('UPDATE redirects SET hit_count = hit_count + 1 WHERE id = ?')
+            .bind(redirect.id)
+            .run()
+            .catch(() => {});
 
           const targetUrl = redirect.target_path.startsWith('http')
             ? redirect.target_path
@@ -37,10 +42,9 @@ export const onRequest = defineMiddleware(async ({ request, locals, next }, { ro
         }
       }
     } catch (error) {
-      // Continue to page if redirect check fails
-      console.error('Redirect middleware error:', error);
+      // D1 not available or redirect check failed - continue to page
     }
   }
 
   return next();
-});
+};
