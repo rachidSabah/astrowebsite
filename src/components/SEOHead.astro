@@ -1,0 +1,35 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  ogTitle?: string;
+  ogDescription?: string;
+  ogImage?: string;
+  canonical?: string;
+  noindex?: boolean;
+  siteUrl: string;
+}
+
+const { title, description, ogTitle, ogDescription, ogImage, canonical, noindex, siteUrl } = Astro.props;
+const fullTitle = title.includes('INFOHAS') ? title : `${title} | INFOHAS Academy`;
+const resolvedOgImage = ogImage ? new URL(ogImage, siteUrl).href : new URL('/images/og-default.jpg', siteUrl).href;
+---
+
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+{!noindex && <meta name="robots" content="index, follow" />}
+<link rel="canonical" href={canonical} />
+
+<meta property="og:title" content={ogTitle || fullTitle} />
+<meta property="og:description" content={ogDescription || description} />
+<meta property="og:image" content={resolvedOgImage} />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="fr_FR" />
+<meta property="og:site_name" content="INFOHAS Academy" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={ogTitle || fullTitle} />
+<meta name="twitter:description" content={ogDescription || description} />
+<meta name="twitter:image" content={resolvedOgImage} />
+<meta name="twitter:site" content="@Groupeinfohas" />

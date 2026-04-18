@@ -1,0 +1,155 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+<Layout title="Connexion Administration" description="" noindex={true}>
+  <div class="min-h-[80vh] flex items-center justify-center px-4 py-12">
+    <div class="w-full max-w-md">
+      <!-- Logo / Brand -->
+      <div class="text-center mb-8">
+        <div class="w-16 h-16 mx-auto bg-gradient-to-br from-primary-600 to-primary-800 rounded-2xl flex items-center justify-center mb-4 shadow-lg shadow-primary-600/25">
+          <svg class="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
+        </div>
+        <h1 class="text-2xl font-bold text-navy-900">Administration</h1>
+        <p class="text-sm text-navy-500 mt-1">INFOHAS Academy — Espace Privé</p>
+      </div>
+
+      <!-- Login Form -->
+      <form id="login-form" class="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 space-y-5">
+        <!-- Username -->
+        <div>
+          <label for="username" class="label-text">Identifiant</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            required
+            class="input-field"
+            autocomplete="username"
+            placeholder="Entrez votre identifiant"
+          />
+        </div>
+
+        <!-- Password -->
+        <div>
+          <label for="password" class="label-text">Mot de passe</label>
+          <div class="relative">
+            <input
+              type="password"
+              id="password"
+              name="password"
+              required
+              class="input-field pr-10"
+              autocomplete="current-password"
+              placeholder="Entrez votre mot de passe"
+            />
+            <button
+              type="button"
+              id="toggle-password"
+              class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-navy-600 transition-colors"
+              aria-label="Afficher le mot de passe"
+            >
+              <svg class="w-5 h-5" id="eye-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Error Message -->
+        <div id="error-message" class="hidden text-red-600 text-sm bg-red-50 border border-red-100 p-3 rounded-lg flex items-center gap-2">
+          <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span id="error-text"></span>
+        </div>
+
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          id="submit-btn"
+          class="btn-primary w-full"
+        >
+          <span id="btn-text">Se Connecter</span>
+          <svg id="btn-spinner" class="hidden w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+          </svg>
+        </button>
+      </form>
+
+      <!-- Footer note -->
+      <p class="text-center text-xs text-gray-400 mt-6">
+        Accès restreint aux administrateurs autorisés.
+      </p>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  // Toggle password visibility
+  const toggleBtn = document.getElementById('toggle-password');
+  const passwordInput = document.getElementById('password') as HTMLInputElement;
+  const eyeIcon = document.getElementById('eye-icon');
+
+  toggleBtn?.addEventListener('click', () => {
+    const isPassword = passwordInput.type === 'password';
+    passwordInput.type = isPassword ? 'text' : 'password';
+    if (eyeIcon) {
+      eyeIcon.innerHTML = isPassword
+        ? '<path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L6.59 6.59m7.532 7.532l3.29 3.29M3 3l18 18" />'
+        : '<path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />';
+    }
+  });
+
+  // Handle form submission
+  document.getElementById('login-form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    const errorEl = document.getElementById('error-message');
+    const errorText = document.getElementById('error-text');
+    const btn = document.getElementById('submit-btn') as HTMLButtonElement;
+    const btnText = document.getElementById('btn-text');
+    const btnSpinner = document.getElementById('btn-spinner');
+
+    // Disable button & show spinner
+    btn.disabled = true;
+    btn.classList.add('opacity-70', 'cursor-not-allowed');
+    if (btnText) btnText.textContent = 'Connexion en cours...';
+    btnSpinner?.classList.remove('hidden');
+    errorEl?.classList.add('hidden');
+
+    try {
+      const res = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: (form.querySelector('#username') as HTMLInputElement).value,
+          password: (form.querySelector('#password') as HTMLInputElement).value,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        window.location.href = '/admin';
+      } else {
+        if (errorText) errorText.textContent = data.error || 'Identifiants incorrects';
+        errorEl?.classList.remove('hidden');
+      }
+    } catch {
+      if (errorText) errorText.textContent = 'Erreur de connexion au serveur. Veuillez réessayer.';
+      errorEl?.classList.remove('hidden');
+    } finally {
+      btn.disabled = false;
+      btn.classList.remove('opacity-70', 'cursor-not-allowed');
+      if (btnText) btnText.textContent = 'Se Connecter';
+      btnSpinner?.classList.add('hidden');
+    }
+  });
+
+  // Auto-focus username field
+  document.getElementById('username')?.focus();
+</script>

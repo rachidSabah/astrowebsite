@@ -1,0 +1,418 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getDB, getAllRedirects } from '../../lib/db';
+import { requireAuth } from '../../lib/auth';
+
+const auth = await requireAuth(Astro.request, getDB(Astro));
+if (!auth) return Astro.redirect('/admin/login');
+
+const db = getDB(Astro);
+const redirectResult = await getAllRedirects(db);
+const redirectsList = (redirectResult.results as any[]) || [];
+---
+
+<Layout title="Redirections — Administration" description="" noindex={true}>
+  <div class="flex min-h-[calc(100vh-200px)]">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-navy-900 text-white flex-shrink-0 hidden lg:flex flex-col">
+      <div class="p-6 border-b border-navy-700">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center">
+            <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+          </div>
+          <div>
+            <p class="font-bold text-sm">INFOHAS Academy</p>
+            <p class="text-xs text-navy-400">Administration</p>
+          </div>
+        </div>
+      </div>
+      <nav class="flex-1 p-4 space-y-1">
+        <a href="/admin" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-navy-300 hover:bg-navy-800 hover:text-white transition-colors">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0h4" /></svg>
+          Tableau de bord
+        </a>
+        <a href="/admin/submissions" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-navy-300 hover:bg-navy-800 hover:text-white transition-colors">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+          Candidatures
+        </a>
+        <a href="/admin/content" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-navy-300 hover:bg-navy-800 hover:text-white transition-colors">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+          Contenu
+        </a>
+        <a href="/admin/seo" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-navy-300 hover:bg-navy-800 hover:text-white transition-colors">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+          SEO & Meta
+        </a>
+        <a href="/admin/redirects" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium bg-navy-800 text-white">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
+          Redirections
+        </a>
+      </nav>
+      <div class="p-4 border-t border-navy-700">
+        <div class="flex items-center gap-3 px-3 py-2 mb-2">
+          <div class="w-8 h-8 bg-primary-600 rounded-full flex items-center justify-center text-sm font-bold">
+            {(auth.username || 'A').charAt(0).toUpperCase()}
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-medium truncate">{auth.username}</p>
+            <p class="text-xs text-navy-400">Administrateur</p>
+          </div>
+        </div>
+        <button id="logout-btn" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-navy-300 hover:bg-red-900/50 hover:text-red-300 transition-colors">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+          Déconnexion
+        </button>
+      </div>
+    </aside>
+
+    <!-- Mobile Header -->
+    <div class="lg:hidden fixed top-0 left-0 right-0 z-50 bg-navy-900 text-white px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center">
+          <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+        </div>
+        <span class="font-bold text-sm">Admin</span>
+      </div>
+      <button id="mobile-menu-btn" class="p-2 rounded-lg hover:bg-navy-800">
+        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden fixed inset-0 z-40 lg:hidden">
+      <div class="absolute inset-0 bg-black/50" id="mobile-menu-overlay"></div>
+      <div class="absolute left-0 top-0 bottom-0 w-64 bg-navy-900 text-white flex flex-col">
+        <div class="p-6 border-b border-navy-700">
+          <p class="font-bold text-sm">INFOHAS Academy — Administration</p>
+        </div>
+        <nav class="flex-1 p-4 space-y-1">
+          <a href="/admin" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-navy-300 hover:bg-navy-800 hover:text-white transition-colors">Tableau de bord</a>
+          <a href="/admin/submissions" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-navy-300 hover:bg-navy-800 hover:text-white transition-colors">Candidatures</a>
+          <a href="/admin/content" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-navy-300 hover:bg-navy-800 hover:text-white transition-colors">Contenu</a>
+          <a href="/admin/seo" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-navy-300 hover:bg-navy-800 hover:text-white transition-colors">SEO & Meta</a>
+          <a href="/admin/redirects" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium bg-navy-800 text-white">Redirections</a>
+        </nav>
+        <div class="p-4 border-t border-navy-700">
+          <button id="logout-btn-mobile" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-navy-300 hover:bg-red-900/50 hover:text-red-300 transition-colors">Déconnexion</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 bg-gray-50 lg:bg-white pt-16 lg:pt-0">
+      <div class="p-6 lg:p-8 max-w-7xl">
+        <!-- Page Header -->
+        <div class="mb-6">
+          <h1 class="text-2xl lg:text-3xl font-bold text-navy-900">Gestionnaire de Redirections</h1>
+          <p class="text-navy-500 mt-1">Configurez les redirections d'URL pour votre site.</p>
+        </div>
+
+        <!-- Add New Redirect Form -->
+        <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-6 mb-6">
+          <h2 class="text-lg font-bold text-navy-900 mb-4 flex items-center gap-2">
+            <svg class="w-5 h-5 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
+            Ajouter une redirection
+          </h2>
+          <form id="add-redirect-form" class="flex flex-col sm:flex-row gap-3">
+            <div class="flex-1">
+              <input type="text" id="new-source" class="input-field" placeholder="Chemin source (ex: /ancienne-page)" required />
+            </div>
+            <div class="flex-1">
+              <input type="text" id="new-target" class="input-field" placeholder="Cible (ex: /nouvelle-page ou https://...)" required />
+            </div>
+            <div class="w-full sm:w-32">
+              <select id="new-status-code" class="input-field">
+                <option value="301">301 Permanent</option>
+                <option value="302">302 Temporaire</option>
+                <option value="307">307 Temporaire</option>
+                <option value="308">308 Permanent</option>
+              </select>
+            </div>
+            <button type="submit" class="btn-primary px-6 py-3 text-sm whitespace-nowrap">
+              <span id="add-redirect-text">Ajouter</span>
+              <svg id="add-redirect-spinner" class="hidden w-4 h-4 animate-spin ml-1" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+            </button>
+          </form>
+          <div id="add-redirect-toast" class="hidden mt-3 text-sm px-4 py-2 rounded-lg"></div>
+        </div>
+
+        <!-- Redirects Table -->
+        <div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead>
+                <tr class="border-b border-gray-100 bg-gray-50">
+                  <th class="text-left px-6 py-3 text-xs font-semibold text-navy-500 uppercase tracking-wider">Source</th>
+                  <th class="text-left px-6 py-3 text-xs font-semibold text-navy-500 uppercase tracking-wider hidden md:table-cell">Cible</th>
+                  <th class="text-left px-6 py-3 text-xs font-semibold text-navy-500 uppercase tracking-wider hidden sm:table-cell">Code</th>
+                  <th class="text-left px-6 py-3 text-xs font-semibold text-navy-500 uppercase tracking-wider hidden lg:table-cell">Hits</th>
+                  <th class="text-left px-6 py-3 text-xs font-semibold text-navy-500 uppercase tracking-wider">Actif</th>
+                  <th class="text-left px-6 py-3 text-xs font-semibold text-navy-500 uppercase tracking-wider">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-50" id="redirects-tbody">
+                {redirectsList.length === 0 ? (
+                  <tr><td colspan="6" class="px-6 py-12 text-center text-navy-400">Aucune redirection configurée.</td></tr>
+                ) : redirectsList.map((r: any) => (
+                  <tr class="hover:bg-gray-50 transition-colors redirect-row" data-id={r.id}>
+                    <td class="px-6 py-4">
+                      <code class="text-sm font-mono text-navy-800 bg-gray-100 px-2 py-1 rounded">{r.source_path}</code>
+                    </td>
+                    <td class="px-6 py-4 hidden md:table-cell">
+                      <code class="text-sm font-mono text-primary-600 truncate block max-w-[250px]">{r.target_path}</code>
+                    </td>
+                    <td class="px-6 py-4 hidden sm:table-cell">
+                      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">{r.status_code}</span>
+                    </td>
+                    <td class="px-6 py-4 hidden lg:table-cell text-sm text-navy-500">{r.hit_count || 0}</td>
+                    <td class="px-6 py-4">
+                      <button class="toggle-active-btn relative w-11 h-6 rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2" data-id={r.id} data-active={r.is_active} aria-label="Toggle active">
+                        <span class="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform duration-200"></span>
+                      </button>
+                    </td>
+                    <td class="px-6 py-4">
+                      <div class="flex items-center gap-1">
+                        <button class="edit-redirect-btn p-1.5 rounded-lg text-navy-400 hover:bg-primary-50 hover:text-primary-600 transition-colors" title="Modifier" data-id={r.id} data-source={r.source_path} data-target={r.target_path} data-code={r.status_code}>
+                          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+                        </button>
+                        <button class="delete-redirect-btn p-1.5 rounded-lg text-navy-400 hover:bg-red-50 hover:text-red-600 transition-colors" title="Supprimer" data-id={r.id} data-path={r.source_path}>
+                          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Modal -->
+  <div id="edit-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div class="absolute inset-0 bg-black/50" id="edit-modal-overlay"></div>
+    <div class="relative bg-white rounded-2xl shadow-2xl max-w-md w-full">
+      <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+        <h3 class="text-lg font-bold text-navy-900">Modifier la redirection</h3>
+        <button id="edit-modal-close" class="p-2 rounded-lg hover:bg-gray-100 transition-colors">
+          <svg class="w-5 h-5 text-navy-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+        </button>
+      </div>
+      <form id="edit-redirect-form" class="p-6 space-y-4">
+        <input type="hidden" id="edit-id" />
+        <div>
+          <label class="label-text">Chemin source</label>
+          <input type="text" id="edit-source" class="input-field" required />
+        </div>
+        <div>
+          <label class="label-text">Cible</label>
+          <input type="text" id="edit-target" class="input-field" required />
+        </div>
+        <div>
+          <label class="label-text">Code de statut</label>
+          <select id="edit-status-code" class="input-field">
+            <option value="301">301 - Redirection permanente</option>
+            <option value="302">302 - Redirection temporaire</option>
+            <option value="307">307 - Redirection temporaire</option>
+            <option value="308">308 - Redirection permanente</option>
+          </select>
+        </div>
+        <div class="flex gap-3 pt-2">
+          <button type="button" id="edit-cancel-btn" class="flex-1 px-4 py-2.5 text-sm font-medium text-navy-500 border border-gray-200 rounded-lg hover:bg-gray-100 transition-colors">Annuler</button>
+          <button type="submit" class="flex-1 btn-primary text-sm">
+            <span id="edit-save-text">Enregistrer</span>
+            <svg id="edit-save-spinner" class="hidden w-4 h-4 animate-spin ml-1" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  // ---- Logout ----
+  async function doLogout() {
+    try { await fetch('/api/admin/logout', { method: 'POST' }); } catch {}
+    window.location.href = '/admin/login';
+  }
+  document.getElementById('logout-btn')?.addEventListener('click', doLogout);
+  document.getElementById('logout-btn-mobile')?.addEventListener('click', doLogout);
+
+  // ---- Mobile Menu ----
+  const mobileMenu = document.getElementById('mobile-menu');
+  document.getElementById('mobile-menu-btn')?.addEventListener('click', () => mobileMenu?.classList.toggle('hidden'));
+  document.getElementById('mobile-menu-overlay')?.addEventListener('click', () => mobileMenu?.classList.add('hidden'));
+
+  // ---- Toggle active button colors ----
+  function updateToggleColors(btn: HTMLElement) {
+    const isActive = btn.getAttribute('data-active') === '1';
+    if (isActive) {
+      btn.classList.add('bg-primary-600');
+      btn.classList.remove('bg-gray-300');
+      const dot = btn.querySelector('span');
+      if (dot) { dot.classList.add('translate-x-5'); dot.classList.remove('translate-x-0'); }
+    } else {
+      btn.classList.remove('bg-primary-600');
+      btn.classList.add('bg-gray-300');
+      const dot = btn.querySelector('span');
+      if (dot) { dot.classList.remove('translate-x-5'); dot.classList.add('translate-x-0'); }
+    }
+  }
+
+  document.querySelectorAll('.toggle-active-btn').forEach(btn => updateToggleColors(btn as HTMLElement));
+
+  // ---- Toggle active status ----
+  document.querySelectorAll('.toggle-active-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const id = parseInt(btn.getAttribute('data-id') || '0');
+      const currentActive = btn.getAttribute('data-active') === '1';
+      const newActive = currentActive ? 0 : 1;
+
+      try {
+        const res = await fetch('/api/admin/redirects', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id, is_active: newActive }),
+        });
+
+        if (res.ok) {
+          btn.setAttribute('data-active', String(newActive));
+          updateToggleColors(btn as HTMLElement);
+        }
+      } catch (err) {
+        console.error('Failed to toggle redirect:', err);
+      }
+    });
+  });
+
+  // ---- Add redirect ----
+  const addForm = document.getElementById('add-redirect-form');
+  const addText = document.getElementById('add-redirect-text');
+  const addSpinner = document.getElementById('add-redirect-spinner');
+  const addToast = document.getElementById('add-redirect-toast');
+
+  addForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!addText) return;
+    const source = (document.getElementById('new-source') as HTMLInputElement).value;
+    const target = (document.getElementById('new-target') as HTMLInputElement).value;
+    const statusCode = parseInt((document.getElementById('new-status-code') as HTMLSelectElement).value);
+
+    addText.textContent = 'Ajout...';
+    addSpinner?.classList.remove('hidden');
+    addToast?.classList.add('hidden');
+
+    try {
+      const res = await fetch('/api/admin/redirects', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ source_path: source, target_path: target, status_code: statusCode }),
+      });
+
+      if (res.ok) {
+        addToast!.className = 'mt-3 text-sm px-4 py-2 rounded-lg bg-green-50 text-green-700 border border-green-200';
+        addToast.textContent = 'Redirection ajoutée avec succès !';
+        addToast.classList.remove('hidden');
+        addForm.reset();
+        setTimeout(() => window.location.reload(), 1000);
+      } else {
+        const err = await res.json();
+        addToast!.className = 'mt-3 text-sm px-4 py-2 rounded-lg bg-red-50 text-red-600 border border-red-200';
+        addToast.textContent = 'Erreur: ' + (err.error || 'Échec');
+        addToast.classList.remove('hidden');
+      }
+    } catch {
+      addToast!.className = 'mt-3 text-sm px-4 py-2 rounded-lg bg-red-50 text-red-600 border border-red-200';
+      addToast.textContent = 'Erreur de connexion au serveur.';
+      addToast.classList.remove('hidden');
+    } finally {
+      addText.textContent = 'Ajouter';
+      addSpinner?.classList.add('hidden');
+    }
+  });
+
+  // ---- Delete redirect ----
+  document.querySelectorAll('.delete-redirect-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const id = parseInt(btn.getAttribute('data-id') || '0');
+      const path = btn.getAttribute('data-path') || '';
+      if (!confirm(`Supprimer la redirection "${path}" ?`)) return;
+
+      try {
+        const res = await fetch('/api/admin/redirects', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id }),
+        });
+
+        if (res.ok) {
+          const row = btn.closest('tr');
+          row?.remove();
+        }
+      } catch (err) {
+        console.error('Failed to delete redirect:', err);
+      }
+    });
+  });
+
+  // ---- Edit modal ----
+  const editModal = document.getElementById('edit-modal');
+  const editForm = document.getElementById('edit-redirect-form');
+  const editId = document.getElementById('edit-id') as HTMLInputElement;
+  const editSource = document.getElementById('edit-source') as HTMLInputElement;
+  const editTarget = document.getElementById('edit-target') as HTMLInputElement;
+  const editCode = document.getElementById('edit-status-code') as HTMLSelectElement;
+  const editSaveText = document.getElementById('edit-save-text');
+  const editSaveSpinner = document.getElementById('edit-save-spinner');
+
+  document.querySelectorAll('.edit-redirect-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      editId.value = btn.getAttribute('data-id') || '';
+      editSource.value = btn.getAttribute('data-source') || '';
+      editTarget.value = btn.getAttribute('data-target') || '';
+      editCode.value = btn.getAttribute('data-code') || '301';
+      editModal?.classList.remove('hidden');
+    });
+  });
+
+  document.getElementById('edit-modal-close')?.addEventListener('click', () => editModal?.classList.add('hidden'));
+  document.getElementById('edit-modal-overlay')?.addEventListener('click', () => editModal?.classList.add('hidden'));
+  document.getElementById('edit-cancel-btn')?.addEventListener('click', () => editModal?.classList.add('hidden'));
+
+  editForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!editSaveText) return;
+    editSaveText.textContent = 'Enregistrement...';
+    editSaveSpinner?.classList.remove('hidden');
+
+    try {
+      const res = await fetch('/api/admin/redirects', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: parseInt(editId.value),
+          source_path: editSource.value,
+          target_path: editTarget.value,
+          status_code: parseInt(editCode.value),
+        }),
+      });
+
+      if (res.ok) {
+        editModal?.classList.add('hidden');
+        setTimeout(() => window.location.reload(), 500);
+      } else {
+        const err = await res.json();
+        alert('Erreur: ' + (err.error || 'Échec de la mise à jour'));
+      }
+    } catch {
+      alert('Erreur de connexion au serveur.');
+    } finally {
+      editSaveText.textContent = 'Enregistrer';
+      editSaveSpinner?.classList.add('hidden');
+    }
+  });
+</script>

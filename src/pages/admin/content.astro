@@ -1,0 +1,293 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getDB, getAllPages } from '../../lib/db';
+import { requireAuth } from '../../lib/auth';
+
+const auth = await requireAuth(Astro.request, getDB(Astro));
+if (!auth) return Astro.redirect('/admin/login');
+
+const db = getDB(Astro);
+const pagesResult = await getAllPages(db);
+const pagesList = (pagesResult.results as any[]) || [];
+---
+
+<Layout title="Contenu — Administration" description="" noindex={true}>
+  <div class="flex min-h-[calc(100vh-200px)]">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-navy-900 text-white flex-shrink-0 hidden lg:flex flex-col">
+      <div class="p-6 border-b border-navy-700">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center">
+            <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+          </div>
+          <div>
+            <p class="font-bold text-sm">INFOHAS Academy</p>
+            <p class="text-xs text-navy-400">Administration</p>
+          </div>
+        </div>
+      </div>
+      <nav class="flex-1 p-4 space-y-1">
+        <a href="/admin" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-navy-300 hover:bg-navy-800 hover:text-white transition-colors">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0h4" /></svg>
+          Tableau de bord
+        </a>
+        <a href="/admin/submissions" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-navy-300 hover:bg-navy-800 hover:text-white transition-colors">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+          Candidatures
+        </a>
+        <a href="/admin/content" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium bg-navy-800 text-white">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+          Contenu
+        </a>
+        <a href="/admin/seo" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-navy-300 hover:bg-navy-800 hover:text-white transition-colors">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+          SEO & Meta
+        </a>
+        <a href="/admin/redirects" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-navy-300 hover:bg-navy-800 hover:text-white transition-colors">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
+          Redirections
+        </a>
+      </nav>
+      <div class="p-4 border-t border-navy-700">
+        <div class="flex items-center gap-3 px-3 py-2 mb-2">
+          <div class="w-8 h-8 bg-primary-600 rounded-full flex items-center justify-center text-sm font-bold">
+            {(auth.username || 'A').charAt(0).toUpperCase()}
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-medium truncate">{auth.username}</p>
+            <p class="text-xs text-navy-400">Administrateur</p>
+          </div>
+        </div>
+        <button id="logout-btn" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-navy-300 hover:bg-red-900/50 hover:text-red-300 transition-colors">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+          Déconnexion
+        </button>
+      </div>
+    </aside>
+
+    <!-- Mobile Header -->
+    <div class="lg:hidden fixed top-0 left-0 right-0 z-50 bg-navy-900 text-white px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center">
+          <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+        </div>
+        <span class="font-bold text-sm">Admin</span>
+      </div>
+      <button id="mobile-menu-btn" class="p-2 rounded-lg hover:bg-navy-800">
+        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden fixed inset-0 z-40 lg:hidden">
+      <div class="absolute inset-0 bg-black/50" id="mobile-menu-overlay"></div>
+      <div class="absolute left-0 top-0 bottom-0 w-64 bg-navy-900 text-white flex flex-col">
+        <div class="p-6 border-b border-navy-700">
+          <p class="font-bold text-sm">INFOHAS Academy — Administration</p>
+        </div>
+        <nav class="flex-1 p-4 space-y-1">
+          <a href="/admin" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-navy-300 hover:bg-navy-800 hover:text-white transition-colors">Tableau de bord</a>
+          <a href="/admin/submissions" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-navy-300 hover:bg-navy-800 hover:text-white transition-colors">Candidatures</a>
+          <a href="/admin/content" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium bg-navy-800 text-white">Contenu</a>
+          <a href="/admin/seo" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-navy-300 hover:bg-navy-800 hover:text-white transition-colors">SEO & Meta</a>
+          <a href="/admin/redirects" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-navy-300 hover:bg-navy-800 hover:text-white transition-colors">Redirections</a>
+        </nav>
+        <div class="p-4 border-t border-navy-700">
+          <button id="logout-btn-mobile" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-navy-300 hover:bg-red-900/50 hover:text-red-300 transition-colors">Déconnexion</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 bg-gray-50 lg:bg-white pt-16 lg:pt-0">
+      <div class="p-6 lg:p-8 max-w-7xl">
+        <!-- Page Header -->
+        <div class="mb-6 flex items-center justify-between">
+          <div>
+            <h1 class="text-2xl lg:text-3xl font-bold text-navy-900">Gestion du Contenu</h1>
+            <p class="text-navy-500 mt-1">Modifiez le contenu et les métadonnées des pages.</p>
+          </div>
+        </div>
+
+        <!-- Pages List -->
+        <div id="pages-list" class="space-y-4">
+          {pagesList.length === 0 ? (
+            <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-12 text-center">
+              <svg class="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              <p class="text-navy-500 font-medium">Aucune page de contenu configurée</p>
+              <p class="text-sm text-navy-400 mt-1">Ajoutez du contenu via l'API ou directement en base de données.</p>
+            </div>
+          ) : pagesList.map((page: any) => (
+            <div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+              <button class="page-toggle w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors text-left" data-route={page.route}>
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <svg class="w-5 h-5 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                  </div>
+                  <div>
+                    <p class="text-sm font-semibold text-navy-800">{page.meta_title || page.heading || page.route}</p>
+                    <p class="text-xs text-navy-400 font-mono">/{page.route}</p>
+                  </div>
+                </div>
+                <svg class="w-5 h-5 text-navy-400 transition-transform page-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+              </button>
+              <div class="page-form hidden border-t border-gray-100 bg-gray-50">
+                <form class="content-edit-form p-6 space-y-5" data-route={page.route}>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div>
+                      <label class="label-text">Titre de la page (H1)</label>
+                      <input type="text" name="heading" value={page.heading || ''} class="input-field" placeholder="Titre principal de la page" />
+                    </div>
+                    <div>
+                      <label class="label-text">Route</label>
+                      <input type="text" value={page.route} class="input-field bg-gray-100" disabled />
+                    </div>
+                  </div>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div>
+                      <label class="label-text">Meta Title SEO</label>
+                      <input type="text" name="meta_title" value={page.meta_title || ''} class="input-field" placeholder="Titre pour les moteurs de recherche" maxlength="70" />
+                      <p class="text-xs text-navy-400 mt-1"><span class="char-count" data-for="meta_title">{(page.meta_title || '').length}</span>/70 caractères</p>
+                    </div>
+                    <div>
+                      <label class="label-text">OG Title</label>
+                      <input type="text" name="og_title" value={page.og_title || ''} class="input-field" placeholder="Titre pour les réseaux sociaux" />
+                    </div>
+                  </div>
+                  <div>
+                    <label class="label-text">Meta Description SEO</label>
+                    <textarea name="meta_description" class="input-field" rows="3" placeholder="Description pour les moteurs de recherche" maxlength="160">{page.meta_description || ''}</textarea>
+                    <p class="text-xs text-navy-400 mt-1"><span class="char-count" data-for="meta_description">{(page.meta_description || '').length}</span>/160 caractères</p>
+                  </div>
+                  <div>
+                    <label class="label-text">OG Description</label>
+                    <textarea name="og_description" class="input-field" rows="2" placeholder="Description pour les réseaux sociaux">{page.og_description || ''}</textarea>
+                  </div>
+                  <div>
+                    <label class="label-text">OG Image URL</label>
+                    <input type="text" name="og_image" value={page.og_image || ''} class="input-field" placeholder="https://example.com/image.jpg" />
+                  </div>
+                  <div>
+                    <label class="label-text">Contenu de la page (HTML)</label>
+                    <textarea name="body_content" class="input-field font-mono text-sm" rows="10" placeholder="<h2>Sous-titre</h2><p>Contenu...</p>">{page.body_content || ''}</textarea>
+                  </div>
+                  <div class="flex items-center justify-between pt-2">
+                    <p class="text-xs text-navy-400">Dernière modification: {new Date(page.updated_at || page.created_at).toLocaleString('fr-FR')}</p>
+                    <div class="flex gap-3">
+                      <button type="button" class="cancel-edit-btn px-4 py-2 text-sm font-medium text-navy-500 hover:text-navy-700 border border-gray-200 rounded-lg hover:bg-gray-100 transition-colors">Annuler</button>
+                      <button type="submit" class="save-btn btn-primary px-6 py-2 text-sm">
+                        <span class="save-text">Enregistrer</span>
+                        <svg class="save-spinner hidden w-4 h-4 animate-spin ml-1" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="save-toast hidden bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg text-sm flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+                    <span>Contenu enregistré avec succès !</span>
+                  </div>
+                </form>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  // ---- Logout ----
+  async function doLogout() {
+    try { await fetch('/api/admin/logout', { method: 'POST' }); } catch {}
+    window.location.href = '/admin/login';
+  }
+  document.getElementById('logout-btn')?.addEventListener('click', doLogout);
+  document.getElementById('logout-btn-mobile')?.addEventListener('click', doLogout);
+
+  // ---- Mobile Menu ----
+  const mobileMenu = document.getElementById('mobile-menu');
+  document.getElementById('mobile-menu-btn')?.addEventListener('click', () => mobileMenu?.classList.toggle('hidden'));
+  document.getElementById('mobile-menu-overlay')?.addEventListener('click', () => mobileMenu?.classList.add('hidden'));
+
+  // ---- Page Toggle (expand/collapse) ----
+  document.querySelectorAll('.page-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const parent = btn.closest('.bg-white');
+      const form = parent?.querySelector('.page-form') as HTMLElement;
+      const chevron = btn.querySelector('.page-chevron');
+      if (form) {
+        form.classList.toggle('hidden');
+        chevron?.classList.toggle('rotate-180');
+      }
+    });
+  });
+
+  // ---- Character Count ----
+  document.querySelectorAll('input, textarea').forEach(field => {
+    field.addEventListener('input', () => {
+      const name = field.getAttribute('name');
+      if (name) {
+        const counter = document.querySelector(`.char-count[data-for="${name}"]`);
+        if (counter) counter.textContent = field.value.length;
+      }
+    });
+  });
+
+  // ---- Cancel Edit ----
+  document.querySelectorAll('.cancel-edit-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const form = btn.closest('.page-form') as HTMLElement;
+      const card = btn.closest('.bg-white');
+      form?.classList.add('hidden');
+      card?.querySelector('.page-chevron')?.classList.remove('rotate-180');
+    });
+  });
+
+  // ---- Save Content ----
+  document.querySelectorAll('.content-edit-form').forEach(form => {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = form.querySelector('.save-btn') as HTMLButtonElement;
+      const text = form.querySelector('.save-text') as HTMLElement;
+      const spinner = form.querySelector('.save-spinner') as HTMLElement;
+      const toast = form.querySelector('.save-toast') as HTMLElement;
+
+      btn.disabled = true;
+      text!.textContent = 'Enregistrement...';
+      spinner?.classList.remove('hidden');
+      toast?.classList.add('hidden');
+
+      const route = form.getAttribute('data-route') || '';
+      const data: Record<string, string> = {};
+      (form.querySelectorAll('input[name], textarea[name]') as NodeListOf<HTMLInputElement>).forEach(field => {
+        if (!field.disabled) data[field.name] = field.value;
+      });
+
+      try {
+        const res = await fetch('/api/admin/content', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ route, ...data }),
+        });
+
+        if (res.ok) {
+          toast?.classList.remove('hidden');
+          setTimeout(() => toast?.classList.add('hidden'), 3000);
+        } else {
+          const err = await res.json();
+          alert('Erreur: ' + (err.error || 'Échec de la sauvegarde'));
+        }
+      } catch {
+        alert('Erreur de connexion au serveur.');
+      } finally {
+        btn.disabled = false;
+        text!.textContent = 'Enregistrer';
+        spinner?.classList.add('hidden');
+      }
+    });
+  });
+</script>

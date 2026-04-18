@@ -1,0 +1,389 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import Stats from '../components/Stats.astro';
+import { generateLocalBusinessJsonLd, generateFaqJsonLd } from '../lib/seo.ts';
+
+const faqs = [
+  {
+    question: 'Quelles sont les conditions d\'admission à la formation PNC ?',
+    answer: 'Pour intégrer la formation PNC d\'INFOHAS Academy, vous devez avoir au minimum 18 ans, posséder un baccalauréat ou un diplôme équivalent, mesurer au moins 1,60 m, maîtriser le français et l\'anglais, et être apte physiquement. Un test de natation fait également partie du processus de sélection. La sélection inclut un entretien de motivation et des épreuves psychotechniques.'
+  },
+  {
+    question: 'La formation est-elle reconnue par l\'État marocain ?',
+    answer: 'Absolument. La formation PNC d\'INFOHAS Academy bénéficie d\'une accréditation officielle de l\'État marocain. Notre programme est homologué par la DGAC (Direction Générale de l\'Aviation Civile), ce qui garantit que votre diplôme est reconnu tant au niveau national qu\'international par l\'ensemble des compagnies aériennes partenaires.'
+  },
+  {
+    question: 'Quelles compagnies aériennes recrutent vos diplômés ?',
+    answer: 'Nos diplômés sont très recherchés par les plus grandes compagnies aériennes. Parmi nos partenaires de recrutement figurent Emirates, Qatar Airways, Etihad Airways, Royal Air Maroc, Turkish Airlines, Saudi Arabian Airlines, Air France, Ryanair, ainsi que de nombreuses compagnies régionales et privées. Notre taux de placement atteint 95 % dès les six premiers mois suivant l\'obtention du diplôme.'
+  },
+  {
+    question: 'Quelle est la durée de la formation PNC et quel est le coût ?',
+    answer: 'La formation PNC (Personnel Navigant Commercial) dure 18 mois à temps plein. Elle comprend 11 modules couvrant la sécurité, le secourisme, le service client, l\'anglais aéronautique et bien plus. Le programme inclut des stages pratiques en simulateurs Boeing et Airbus. Pour obtenir le tarif détaillé et les facilités de paiement, nous vous invitons à contacter notre service des admissions au +212 537 76 20 25 ou à remplir le formulaire d\'inscription en ligne.'
+  },
+  {
+    question: 'Proposez-vous des facilités de paiement ou des bourses ?',
+    answer: 'Oui, INFOHAS Academy met en place des solutions de financement adaptées pour permettre à chaque candidat motivé de réaliser son rêve. Nous proposons un échelonnement des paiements en plusieurs tranches sans intérêt. Par ailleurs, nous collaborons avec plusieurs organismes bancaires pour des solutions de crédit études. Des bourses partielles peuvent être accordées sur critères de mérite lors de la sélection.'
+  },
+  {
+    question: 'Y a-t-il un hébergement prévu pour les étudiants venant d\'autres villes ?',
+    answer: 'INFOHAS Academy assiste ses étudiants dans la recherche de logements à proximité du campus de Rabat. Nous disposons d\'un réseau de partenaires immobiliers offrant des solutions adaptées à tous les budgets, du logement en colocation aux studios individuels. Notre équipe administrative vous accompagne dès votre admission pour faciliter votre installation.'
+  }
+];
+
+const localBusinessJsonLd = generateLocalBusinessJsonLd(Astro.site?.href || 'https://infohas-academy.pages.dev');
+const faqJsonLd = generateFaqJsonLd(faqs);
+
+const features = [
+  {
+    title: 'Accréditation d\'État & DGAC',
+    description: 'Notre formation est officiellement reconnue par les autorités marocaines et homologuée par la Direction Générale de l\'Aviation Civile, ouvrant les portes des compagnies du monde entier.',
+    icon: 'shield'
+  },
+  {
+    title: 'Simulateurs Boeing & Airbus',
+    description: 'Entraînez-vous dans des conditions réelles grâce à nos simulateurs de cabine certifiés. Chaque manœuvre est répétée jusqu\'à la perfection dans un environnement fidèle aux cabines modernes.',
+    icon: 'plane'
+  },
+  {
+    title: 'Corps enseignant d\'élite',
+    description: 'Nos formateurs sont d\'anciens PNC et commandants de bord avec des milliers d\'heures de vol. Ils transmettent un savoir-faire issu de l\'expérience des plus grandes compagnies internationales.',
+    icon: 'users'
+  },
+  {
+    title: 'Réseau mondial de partenaires',
+    description: 'Des accords de recrutement exclusifs avec plus de 30 compagnies aériennes internationales. Notre cellule de placement vous accompagne individuellement vers votre premier contrat.',
+    icon: 'globe'
+  },
+  {
+    title: 'Coaching carrière personnalisé',
+    description: 'Préparation aux entretiens, optimisation de votre profil LinkedIn, coaching en image et communication. Un accompagnement sur mesure pour maximiser vos chances de recrutement.',
+    icon: 'target'
+  },
+  {
+    title: 'Immersion en milieu professionnel',
+    description: 'Des stages opérationnels au sein de compagnies partenaires et des visites dans les hubs aéroportuaires les plus importants. Concrétisez votre apprentissage par la pratique du terrain.',
+    icon: 'briefcase'
+  }
+];
+
+const programs = [
+  {
+    title: 'Formation PNC',
+    subtitle: 'Personnel Navigant Commercial',
+    duration: '18 mois',
+    badge: 'Programme Phare',
+    description: 'Notre formation phare, accréditée par l\'État et la DGAC, couvre l\'ensemble des compétences requises pour exercer le métier d\'hôtesse de l\'air ou de steward au sein des compagnies aériennes internationales.',
+    modules: 11,
+    icon: 'star'
+  },
+  {
+    title: 'Hôtesse d\'Accueil',
+    subtitle: 'Accueil & Relations Publiques',
+    duration: '6 mois',
+    badge: 'Certifiant',
+    description: 'Développez les compétences essentielles pour exceller dans l\'accueil en entreprise, les halls d\'aéroport, les palaces et les centres de congrès. Une formation intense orientée vers l\'excellence relationnelle.',
+    modules: 6,
+    icon: 'heart'
+  },
+  {
+    title: 'Agent Aéroportuaire',
+    subtitle: 'Opérations & Service Sol',
+    duration: '9 mois',
+    badge: 'Spécialisé',
+    description: 'Maîtrisez l\'ensemble des opérations aéroportuaires : enregistrement, assistance passagers, gestion des escales et coordination au sol. Un accès direct aux métiers de l\'aéroport.',
+    modules: 8,
+    icon: 'building'
+  }
+];
+
+const airlines = [
+  { name: 'Emirates', code: 'EK' },
+  { name: 'Qatar Airways', code: 'QR' },
+  { name: 'Etihad Airways', code: 'EY' },
+  { name: 'Royal Air Maroc', code: 'AT' },
+  { name: 'Turkish Airlines', code: 'TK' },
+  { name: 'Saudi Arabian Airlines', code: 'SV' },
+  { name: 'Air France', code: 'AF' },
+  { name: 'Ryanair', code: 'FR' }
+];
+---
+
+<Layout
+  title="INFOHAS Academy – Académie de Formation Aéronautique | Rabat, Maroc"
+  description="INFOHAS Academy, l'académie de référence au Maroc pour la formation du personnel navigant commercial depuis 1996. Formations accréditées par l'État, simulateurs Boeing/Airbus, 95% de taux de placement. Inscrivez-vous dès maintenant."
+  breadcrumbs={[
+    { name: 'Accueil', url: '/' }
+  ]}
+  jsonLd={faqJsonLd}
+>
+  <!-- Hero Section -->
+  <Hero
+    title="Envolez-Votre Carrière dans l'Aviation Internationale"
+    subtitle="Depuis 1996, INFOHAS Academy façonne les talents de l'aviation au cœur de Rabat. Rejoignez la première académie accréditée par l'État marocain et donnez-vous les moyens de voler vers les plus grandes compagnies aériennes du monde."
+    ctaPrimary={{ label: 'Postuler Maintenant', href: '/inscription' }}
+    ctaSecondary={{ label: 'Découvrir Nos Formations', href: '/programmes' }}
+    badge="Inscriptions Session en Cours — Places Limitées"
+    backgroundImage="/images/hero-cabin-crew.webp"
+  />
+
+  <!-- [High-Res WebP: Wide panoramic shot of cabin crew trainees in modern airplane cabin during service training simulation, warm cabin lighting] -->
+
+  <!-- Stats Section -->
+  <Stats />
+
+  <!-- Why Choose INFOHAS - Features Section -->
+  <section class="section-padding bg-gray-50" id="avantages">
+    <div class="container-max">
+      <div class="text-center max-w-3xl mx-auto mb-16 animate-on-scroll">
+        <span class="badge-primary text-sm px-4 py-2 mb-4 inline-block">
+          Pourquoi INFOHAS Academy
+        </span>
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-navy-900 mb-6 leading-tight">
+          L'Excellence au Service de <span class="gradient-text">Votre Ambition</span>
+        </h2>
+        <p class="text-lg text-navy-600 leading-relaxed">
+          Plus qu'une simple école, INFOHAS Academy est un véritable tremplin vers une carrière internationale.
+          Découvrez ce qui distingue notre approche pédagogique et pourquoi nos diplômés s'envolent
+          vers les plus prestigieuses compagnies aériennes.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        {features.map((feature, i) => (
+          <div class="card group animate-on-scroll" style={`animation-delay: ${i * 0.1}s`}>
+            <div class="w-14 h-14 bg-primary-50 rounded-2xl flex items-center justify-center mb-5 group-hover:bg-primary-100 transition-colors">
+              {feature.icon === 'shield' && (
+                <svg class="w-7 h-7 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+              )}
+              {feature.icon === 'plane' && (
+                <svg class="w-7 h-7 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                </svg>
+              )}
+              {feature.icon === 'users' && (
+                <svg class="w-7 h-7 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              )}
+              {feature.icon === 'globe' && (
+                <svg class="w-7 h-7 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              )}
+              {feature.icon === 'target' && (
+                <svg class="w-7 h-7 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10" />
+                  <circle cx="12" cy="12" r="6" />
+                  <circle cx="12" cy="12" r="2" />
+                </svg>
+              )}
+              {feature.icon === 'briefcase' && (
+                <svg class="w-7 h-7 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+              )}
+            </div>
+            <h3 class="text-xl font-bold text-navy-900 mb-3">{feature.title}</h3>
+            <p class="text-navy-600 leading-relaxed text-sm">{feature.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- [High-Res WebP: Bird's eye view of INFOHAS Academy campus building in Rabat with modern architecture] -->
+
+  <!-- Programs Overview Section -->
+  <section class="section-padding bg-white" id="programmes">
+    <div class="container-max">
+      <div class="text-center max-w-3xl mx-auto mb-16 animate-on-scroll">
+        <span class="badge-primary text-sm px-4 py-2 mb-4 inline-block">
+          Nos Formations
+        </span>
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-navy-900 mb-6 leading-tight">
+          Des Programmes Conçus pour <span class="gradient-text">l'Excellence</span>
+        </h2>
+        <p class="text-lg text-navy-600 leading-relaxed">
+          Chaque formation a été élaborée en collaboration avec les professionnels de l'aviation
+          pour répondre aux exigences les plus strictes du secteur. Choisissez votre voie et préparez-vous
+          à rejoindre les rangs des meilleurs.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {programs.map((program, i) => (
+          <div class={`relative bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden group animate-on-scroll hover:shadow-xl transition-all duration-300 ${i === 0 ? 'ring-2 ring-primary-500 ring-offset-4' : ''}`}>
+            {i === 0 && (
+              <div class="absolute top-0 left-0 right-0 bg-gradient-to-r from-primary-600 to-primary-700 text-white text-xs font-bold uppercase tracking-wider text-center py-2">
+                Programme Recommandé
+              </div>
+            )}
+            <div class={`p-8 ${i === 0 ? 'pt-14' : ''}`}>
+              <div class="flex items-center justify-between mb-4">
+                <span class="badge-accent text-xs">{program.badge}</span>
+                <span class="text-sm font-semibold text-navy-500">{program.duration}</span>
+              </div>
+              <h3 class="text-2xl font-bold text-navy-900 mb-1">{program.title}</h3>
+              <p class="text-sm text-primary-600 font-medium mb-4">{program.subtitle}</p>
+              <p class="text-navy-600 text-sm leading-relaxed mb-6">{program.description}</p>
+              <div class="flex items-center gap-2 text-sm text-navy-500 mb-6">
+                <svg class="w-5 h-5 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+                <span>{program.modules} modules de formation</span>
+              </div>
+              <div class="flex flex-col gap-3">
+                <a href="/programmes" class="btn-primary text-sm px-6 py-3 w-full text-center">
+                  En Savoir Plus
+                  <svg class="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div class="text-center mt-12 animate-on-scroll">
+        <a href="/programmes" class="inline-flex items-center gap-2 text-primary-600 font-semibold hover:text-primary-700 transition-colors group">
+          Voir le détail complet de toutes nos formations
+          <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- [High-Res WebP: Diverse group of aviation students in uniforms standing proudly in front of aircraft] -->
+
+  <!-- Partners / Airlines Section -->
+  <section class="section-padding bg-gray-50" id="partenaires">
+    <div class="container-max">
+      <div class="text-center max-w-3xl mx-auto mb-14 animate-on-scroll">
+        <span class="badge-primary text-sm px-4 py-2 mb-4 inline-block">
+          Partenaires de Recrutement
+        </span>
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-navy-900 mb-6 leading-tight">
+          Ils Font Confiance à <span class="gradient-text">Nos Diplômés</span>
+        </h2>
+        <p class="text-lg text-navy-600 leading-relaxed">
+          Grâce à des partenariats stratégiques noués au fil des années, nos anciens élèves évoluent
+          au sein des compagnies aériennes les plus prestigieuses du monde. Votre futur employeur
+          figure peut-être parmi eux.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 animate-on-scroll">
+        {airlines.map((airline) => (
+          <div class="bg-white rounded-xl border border-gray-100 p-6 flex flex-col items-center justify-center text-center hover:shadow-md hover:-translate-y-1 transition-all duration-300 group">
+            <!-- [Airline Logo Placeholder: {airline.name} logo] -->
+            <div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-3 group-hover:bg-primary-50 transition-colors">
+              <svg class="w-8 h-8 text-gray-400 group-hover:text-primary-600 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+              </svg>
+            </div>
+            <span class="text-sm font-bold text-navy-700">{airline.name}</span>
+            <span class="text-xs text-navy-400 mt-1">{airline.code}</span>
+          </div>
+        ))}
+      </div>
+
+      <div class="text-center mt-10 animate-on-scroll">
+        <p class="text-navy-500 text-sm">
+          Et bien d'autres compagnies régionales et internationales...
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- [High-Res WebP: Professional headshots montage of INFOHAS graduates in various airline uniforms] -->
+
+  <!-- FAQ Section -->
+  <section class="section-padding bg-white" id="faq">
+    <div class="container-max">
+      <div class="max-w-3xl mx-auto">
+        <div class="text-center mb-14 animate-on-scroll">
+          <span class="badge-primary text-sm px-4 py-2 mb-4 inline-block">
+            Questions Fréquentes
+          </span>
+          <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-navy-900 mb-6 leading-tight">
+            Tout Ce Que Vous Devez <span class="gradient-text">Savoir</span>
+          </h2>
+          <p class="text-lg text-navy-600 leading-relaxed">
+            Retrouvez les réponses aux questions les plus posées par nos futurs étudiants.
+            N'hésitez pas à contacter notre équipe pour toute demande supplémentaire.
+          </p>
+        </div>
+
+        <div class="space-y-4 animate-on-scroll">
+          {faqs.map((faq, i) => (
+            <details class="group bg-gray-50 rounded-xl border border-gray-100 overflow-hidden">
+              <summary class="flex items-center justify-between cursor-pointer px-6 py-5 text-left font-semibold text-navy-900 hover:text-primary-600 transition-colors">
+                <span class="pr-4">{faq.question}</span>
+                <svg class="w-5 h-5 text-navy-400 flex-shrink-0 group-open:rotate-180 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </summary>
+              <div class="px-6 pb-5 text-navy-600 leading-relaxed text-sm">
+                {faq.answer}
+              </div>
+            </details>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- [High-Res WebP: INFOHAS Academy students in classroom setting with professional aviation training equipment] -->
+
+  <!-- Testimonial / Social Proof Band -->
+  <section class="bg-navy-950 py-16 md:py-20">
+    <div class="container-max px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-10 text-center animate-on-scroll">
+        <div>
+          <div class="text-4xl md:text-5xl font-extrabold text-white mb-3">30+</div>
+          <div class="text-navy-300 text-sm font-medium">Compagnies Partenaires</div>
+        </div>
+        <div>
+          <div class="text-4xl md:text-5xl font-extrabold text-white mb-3">+45</div>
+          <div class="text-navy-300 text-sm font-medium">Pays de Destination</div>
+        </div>
+        <div>
+          <div class="text-4xl md:text-5xl font-extrabold text-white mb-3">100%</div>
+          <div class="text-navy-300 text-sm font-medium">Satisfaction Étudiants</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="section-padding bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 relative overflow-hidden">
+    <!-- Decorative background -->
+    <div class="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+    <div class="absolute bottom-0 left-0 w-72 h-72 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2"></div>
+
+    <div class="container-max relative z-10 text-center animate-on-scroll">
+      <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+        Votre Carrière Aéronautique<br />Commence Ici
+      </h2>
+      <p class="text-lg text-primary-100 max-w-2xl mx-auto mb-10 leading-relaxed">
+        Ne laissez pas passer cette opportunité. Les inscriptions pour la prochaine session sont ouvertes
+        et les places sont limitées. Rejoignez les 3 500+ diplômés qui ont déjà conquis le ciel.
+      </p>
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="/inscription" class="inline-flex items-center justify-center px-10 py-4 bg-white text-primary-700 font-bold rounded-lg hover:bg-primary-50 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5">
+          Postuler Maintenant
+          <svg class="w-5 h-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+        </a>
+        <a href="/contact" class="inline-flex items-center justify-center px-10 py-4 bg-transparent text-white font-bold rounded-lg border-2 border-white/30 hover:bg-white/10 transition-all duration-300">
+          Nous Contacter
+        </a>
+      </div>
+      <p class="text-primary-200 text-sm mt-6">
+        <svg class="w-4 h-4 inline-block mr-1 -mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
+        +212 537 76 20 25 — Lundi au Vendredi, 9h à 18h
+      </p>
+    </div>
+  </section>
+</Layout>

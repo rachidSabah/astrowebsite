@@ -1,0 +1,562 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+
+const modules = [
+  {
+    number: '01',
+    title: 'Sécurité & Sauvetage',
+    duration: '120 heures',
+    description: 'Maîtrise approfondie des procédures d\'évacuation d\'urgence, utilisation des équipements de sécurité (gilets de sauvetage, toboggans, radeaux), gestion des situations critiques en vol et coordination des évacuations sur terre et en mer.',
+    skills: ['Évacuation d\'urgence cabine', 'Utilisation des équipements de survie', 'Gestion des passagers à mobilité réduite en situation de crise']
+  },
+  {
+    number: '02',
+    title: 'Secourisme de Bord',
+    duration: '80 heures',
+    description: 'Formation certifiée aux gestes de premiers secours adaptés à l\'environnement aérien : réanimation cardio-pulmonaire, utilisation du défibrillateur, gestion du malaise, traumatismes, et protocoles sanitaires internationaux.',
+    skills: ['RCP et utilisation du DSA', 'Protocoles médicaux aériens', 'Gestion des urgences sanitaires en vol']
+  },
+  {
+    number: '03',
+    title: 'Art du Service Client',
+    duration: '90 heures',
+    description: 'Développement des compétences relationnelles haut de gamme : techniques d\'accueil, gestion des attentes passagers, service gastronomique en cabine, résolution de conflits et création d\'une expérience voyage mémorable.',
+    skills: ['Service cabine premium', 'Gestion des situations délicates', 'Personnalisation de l\'expérience passager']
+  },
+  {
+    number: '04',
+    title: 'Anglais Aéronautique',
+    duration: '160 heures',
+    description: 'Préparation intensive à la maîtrise de l\'anglais aviation conformément aux standards ICAO (niveau 4 minimum). Phraséologie standard, vocabulaire technique, communication avec le cockpit et annonces passagers bilingues.',
+    skills: ['Phraséologie OACI', 'Annonces passagers professionnelles', 'Communication inter-équipage en anglais']
+  },
+  {
+    number: '05',
+    title: 'Connaissances Générales en Aviation',
+    duration: '60 heures',
+    description: 'Compréhension approfondie de l\'écosystème aéronautique : réglementation internationale, structure des compagnies aériennes, types d\'aéronefs, météorologie aéronautique, navigation et gestion du temps de vol.',
+    skills: ['Réglementation aéronautique', 'Connaissance des types d\'aéronefs', 'Géographie et fuseaux horaires']
+  },
+  {
+    number: '06',
+    title: 'Communication Professionnelle',
+    duration: '70 heures',
+    description: 'Perfectionnement des compétences verbales et non-verbales : techniques de présentation, assertivité, écoute active, communication interculturelle et gestion des émotions dans un environnement multiculturel exigeant.',
+    skills: ['Techniques de présentation', 'Intelligence émotionnelle', 'Adaptation interculturelle']
+  },
+  {
+    number: '07',
+    title: 'Facteurs Humains et CRM',
+    duration: '50 heures',
+    description: 'Formation au Crew Resource Management : gestion de la fatigue, prise de décision en situation de stress, travail d\'équipe, hiérarchie de communication et prévention des erreurs humaines en environnement aéronautique.',
+    skills: ['Gestion de la fatigue et du stress', 'Travail d\'équipage structuré', 'Prise de décision sous pression']
+  },
+  {
+    number: '08',
+    title: 'Marchandises Dangereuses (OACI)',
+    duration: '40 heures',
+    description: 'Identification et gestion des marchandises dangereuses transportées en cabine conformément aux réglementations OACI/IATA : classification, emballage, étiquetage et procédures d\'intervention en cas d\'incident.',
+    skills: ['Classification OACI/IATA', 'Procédures de détection', 'Intervention en cas de fuite ou d\'incendie']
+  },
+  {
+    number: '09',
+    title: 'Sûreté Aérienne',
+    duration: '50 heures',
+    description: 'Formation aux protocoles de sécurité et de lutte anti-terrorisme : profilage comportemental, gestion des passagers indisciplinés, actes illicites, piraterie aérienne et coordination avec les services de sécurité au sol.',
+    skills: ['Profilage comportemental', 'Gestion des actes illicites', 'Protocoles de sûreté TSA/IATA']
+  },
+  {
+    number: '10',
+    title: 'Techniques de Vente',
+    duration: '40 heures',
+    description: 'Maîtrise des techniques commerciales en vol : duty free, programmes de fidélité, montée en gamme et maximisation des revenus auxiliaires. Une compétence de plus en plus valorisée par les compagnies low-cost et legacy.',
+    skills: ['Vente croisée et montée en gamme', 'Techniques de persuasion éthique', 'Gestion des programmes duty free']
+  },
+  {
+    number: '11',
+    title: 'Coaching Carrière',
+    duration: '60 heures',
+    description: 'Accompagnement stratégique vers l\'emploi : préparation aux entretiens de recrutement, optimisation du CV aéronautique, coaching en image et posture, simulations d\'assessment center, et mise en relation directe avec les compagnies partenaires.',
+    skills: ['Simulation d\'entretiens compagnies', 'Optimisation du profil LinkedIn', 'Préparation aux assessment centers']
+  }
+];
+
+const prerequisites = [
+  {
+    title: 'Âge minimum',
+    description: 'Avoir au moins 18 ans révolus à la date d\'entrée en formation.',
+    icon: 'calendar'
+  },
+  {
+    title: 'Taille minimale',
+    description: 'Mesurer au minimum 1,60 m pour atteindre les équipements de sécurité en cabine.',
+    icon: 'ruler'
+  },
+  {
+    title: 'Niveau d\'études',
+    description: 'Être titulaire d\'un baccalauréat ou d\'un diplôme équivalent. Un niveau Bac+2 constitue un atout supplémentaire.',
+    icon: 'graduation'
+  },
+  {
+    title: 'Langues',
+    description: 'Maîtrise du français (courant) et de l\'anglais (niveau intermédiaire minimum). La formation intègre un module d\'anglais aéronautique intensif.',
+    icon: 'language'
+  },
+  {
+    title: 'Aptitude physique',
+    description: 'Certificat médical d\'aptitude et aptitude à la natation (test de 25 mètres sans aide). Bonne condition physique générale requise.',
+    icon: 'heart-pulse'
+  },
+  {
+    title: 'Présentation soignée',
+    description: 'Visage dégagé, dents en bon état, absence de tatouages visibles en uniforme. L\'image professionnelle est un critère essentiel dans l\'aviation.',
+    icon: 'sparkles'
+  }
+];
+
+const salaryData = [
+  {
+    airline: 'Compagnies Low-Cost',
+    range: '8 000 – 12 000 MAD / mois',
+    benefits: 'Per diems, primes de vol, formation continue',
+    flag: '🇲🇦'
+  },
+  {
+    airline: 'Compagnies Régionales',
+    range: '12 000 – 18 000 MAD / mois',
+    benefits: 'Assurance, billets employés, progression rapide',
+    flag: '🇪🇺'
+  },
+  {
+    airline: 'Royal Air Maroc',
+    range: '15 000 – 25 000 MAD / mois',
+    benefits: 'Avantages sociaux complets, carrière longue durée',
+    flag: '🇲🇦'
+  },
+  {
+    airline: 'Compagnies du Golfe',
+    range: '25 000 – 45 000 MAD / mois',
+    benefits: 'Logement gratuit, billets annuels, exonération fiscale',
+    flag: '🇦🇪'
+  }
+];
+
+const otherPrograms = [
+  {
+    title: 'Hôtesse d\'Accueil',
+    duration: '6 mois',
+    badge: 'Certifiant',
+    description: 'Cette formation intensive prépare les candidats aux métiers de l\'accueil haut de gamme dans les halls d\'aéroport, les palaces, les centres d\'affaires et les institutions. Le programme couvre les techniques de communication, la gestion des flux, le protocole et l\'image professionnelle.',
+    highlights: ['Techniques d\'accueil et communication', 'Gestion des flux et protocol', 'Anglais professionnel', 'Stage en entreprise']
+  },
+  {
+    title: 'Agent Aéroportuaire',
+    duration: '9 mois',
+    badge: 'Spécialisé',
+    description: 'Formez-vous aux métiers essentiels de l\'aéroport : enregistrement, assistance passagers, opérations d\'escale, gestion des bagages et coordination sol-cabine. Un programme complet pour accéder directement aux emplois des plateformes aéroportuaires.',
+    highlights: ['Opérations d\'enregistrement', 'Assistance passagers PMR', 'Gestion des escales', 'Systèmes informatiques aéroportuaires']
+  }
+];
+
+const careerSteps = [
+  {
+    step: 1,
+    title: 'Jeune Diplômé',
+    subtitle: 'Année 1',
+    description: 'Premier contrat comme PNC junior au sein d\'une compagnie aérienne régionale ou low-cost. Montée en compétences progressive sous la supervision d\'un chef de cabine senior.'
+  },
+  {
+    step: 2,
+    title: 'PNC Confirmé',
+    subtitle: 'Années 2-3',
+    description: 'Autonomie totale sur toutes les lignes régulières et charters. Spécialisation possible sur les vols long-courriers et les classes affaires.'
+  },
+  {
+    step: 3,
+    title: 'Chef de Cabine',
+    subtitle: 'Années 4-7',
+    description: 'Responsable de l\'équipe cabine et de la coordination des services à bord. Leadership, gestion des situations d\'urgence et mentorat des nouveaux PNC.'
+  },
+  {
+    step: 4,
+    title: 'Purser Senior',
+    subtitle: 'Années 8+',
+    description: 'Supervision de l\'ensemble des opérations cabine, relation directe avec le commandant de bord. Possibilité d\'évoluer vers des fonctions de formation ou de management au sol.'
+  }
+];
+---
+
+<Layout
+  title="Nos Programmes – Formations Aéronautiques Accréditées | INFOHAS Academy"
+  description="Découvrez les formations d'excellence d'INFOHAS Academy : Formation PNC 18 mois accréditée par l'État, Hôtesse d'Accueil, Agent Aéroportuaire. 11 modules, simulateurs Boeing/Airbus, placement garanti."
+  breadcrumbs={[
+    { name: 'Accueil', url: '/' },
+    { name: 'Nos Formations', url: '/programmes' }
+  ]}
+>
+  <!-- Hero Section -->
+  <Hero
+    title="Des Formations d'Excellence pour les Métiers de l'Air"
+    subtitle="Des programmes rigoureux, conçus en collaboration avec les plus grandes compagnies aériennes, pour vous préparer aux carrières les plus convoitées de l'aviation civile. Chaque module est une étape supplémentaire vers votre rêve de voler."
+    ctaPrimary={{ label: 'Postuler Maintenant', href: '/inscription' }}
+    ctaSecondary={{ label: 'Contacter les Admissions', href: '/contact' }}
+    badge="Session en Cours — Inscriptions Ouvertes"
+    backgroundImage="/images/programs-hero.webp"
+  />
+
+  <!-- [High-Res WebP: Professional training classroom with aviation equipment and students in uniform] -->
+
+  <!-- Main Program - Formation PNC -->
+  <section class="section-padding bg-white" id="formation-pnc">
+    <div class="container-max">
+      <div class="text-center max-w-3xl mx-auto mb-16 animate-on-scroll">
+        <div class="flex items-center justify-center gap-3 mb-6">
+          <span class="badge-accent text-sm px-4 py-2">Programme Phare</span>
+          <span class="badge-primary text-sm px-4 py-2">Accrédité par l'État</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-navy-900 mb-6 leading-tight">
+          Formation PNC — <span class="gradient-text">Personnel Navigant Commercial</span>
+        </h2>
+        <p class="text-lg text-navy-600 leading-relaxed mb-6">
+          Notre formation phare de 18 mois est le programme le plus complet et le plus reconnu au Maroc pour devenir
+          hôtesse de l'air ou steward. Accrédité par l'État et homologué par la DGAC, il couvre l'intégralité
+          des compétences requises par les compagnies aériennes internationales.
+        </p>
+        <div class="flex flex-wrap items-center justify-center gap-6 text-sm text-navy-600">
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <span><strong class="text-navy-900">18 mois</strong> — Formation intensive</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+            <span><strong class="text-navy-900">11 modules</strong> — Programme complet</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+            <span><strong class="text-navy-900">Diplôme d'État</strong> — Reconnu internationalement</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modules Grid -->
+      <div class="space-y-6">
+        {modules.map((module, i) => (
+          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden animate-on-scroll" style={`animation-delay: ${(i * 0.05)}s`}>
+            <div class="p-6 md:p-8 flex flex-col lg:flex-row gap-6">
+              <!-- Module Number -->
+              <div class="flex-shrink-0">
+                <div class="w-16 h-16 bg-gradient-to-br from-primary-500 to-primary-700 rounded-2xl flex items-center justify-center text-white font-extrabold text-xl">
+                  {module.number}
+                </div>
+              </div>
+              <!-- Module Content -->
+              <div class="flex-1">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3">
+                  <h3 class="text-xl font-bold text-navy-900">{module.title}</h3>
+                  <span class="text-sm font-semibold text-primary-600 bg-primary-50 px-3 py-1 rounded-full whitespace-nowrap">
+                    {module.duration}
+                  </span>
+                </div>
+                <p class="text-navy-600 text-sm leading-relaxed mb-4">{module.description}</p>
+                <div class="flex flex-wrap gap-2">
+                  {module.skills.map((skill) => (
+                    <span class="inline-flex items-center gap-1.5 text-xs font-medium text-navy-600 bg-gray-50 border border-gray-100 px-3 py-1.5 rounded-lg">
+                      <svg class="w-3.5 h-3.5 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- [High-Res WebP: Students practicing emergency evacuation on Boeing 737 cabin simulator] -->
+
+  <!-- Prerequisites Section -->
+  <section class="section-padding bg-gray-50" id="conditions-admission">
+    <div class="container-max">
+      <div class="text-center max-w-3xl mx-auto mb-16 animate-on-scroll">
+        <span class="badge-primary text-sm px-4 py-2 mb-4 inline-block">
+          Conditions d'Admission
+        </span>
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-navy-900 mb-6 leading-tight">
+          Rejoignez-Nous — <span class="gradient-text">Les Critères</span>
+        </h2>
+        <p class="text-lg text-navy-600 leading-relaxed">
+          Pour garantir la qualité de notre programme et la réussite de chaque étudiant,
+          nous avons défini des critères d'admission stricts mais accessibles à tous les candidats motivés.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        {prerequisites.map((req, i) => (
+          <div class="card group animate-on-scroll" style={`animation-delay: ${i * 0.1}s`}>
+            <div class="w-12 h-12 bg-primary-50 rounded-xl flex items-center justify-center mb-4 group-hover:bg-primary-100 transition-colors">
+              {req.icon === 'calendar' && (
+                <svg class="w-6 h-6 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+              )}
+              {req.icon === 'ruler' && (
+                <svg class="w-6 h-6 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" /></svg>
+              )}
+              {req.icon === 'graduation' && (
+                <svg class="w-6 h-6 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 14l9-5-9-5-9 5 9 5z" /><path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" /></svg>
+              )}
+              {req.icon === 'language' && (
+                <svg class="w-6 h-6 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" /></svg>
+              )}
+              {req.icon === 'heart-pulse' && (
+                <svg class="w-6 h-6 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+              )}
+              {req.icon === 'sparkles' && (
+                <svg class="w-6 h-6 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg>
+              )}
+            </div>
+            <h3 class="text-lg font-bold text-navy-900 mb-2">{req.title}</h3>
+            <p class="text-navy-600 text-sm leading-relaxed">{req.description}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="text-center mt-12 animate-on-scroll">
+        <a href="/inscription" class="btn-primary px-8 py-4">
+          Vérifier Mon Éligibilité et Postuler
+          <svg class="w-5 h-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Salary Expectations Section -->
+  <section class="section-padding bg-white" id="salaires">
+    <div class="container-max">
+      <div class="text-center max-w-3xl mx-auto mb-16 animate-on-scroll">
+        <span class="badge-primary text-sm px-4 py-2 mb-4 inline-block">
+          Perspectives Salariales
+        </span>
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-navy-900 mb-6 leading-tight">
+          Investissez dans <span class="gradient-text">Votre Avenir</span>
+        </h2>
+        <p class="text-lg text-navy-600 leading-relaxed">
+          Le métier de PNC offre des perspectives financières attractives, avec une rémunération qui
+          croît rapidement en fonction de l'expérience et de la compagnie. Voici les fourchettes indicatives
+          pour les profils débutants confirmés.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {salaryData.map((item, i) => (
+          <div class={`card text-center animate-on-scroll ${i === 3 ? 'ring-2 ring-primary-500 ring-offset-4' : ''}`} style={`animation-delay: ${i * 0.1}s`}>
+            {i === 3 && (
+              <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary-600 text-white text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap">
+                Rémunération la plus élevée
+              </div>
+            )}
+            <div class="text-3xl mb-3">{item.flag}</div>
+            <h3 class="text-lg font-bold text-navy-900 mb-2">{item.airline}</h3>
+            <div class="text-xl font-extrabold text-primary-600 mb-3">{item.range}</div>
+            <div class="bg-primary-50 rounded-lg p-3">
+              <p class="text-xs text-navy-600 font-medium">{item.benefits}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div class="mt-8 bg-primary-50 border border-primary-100 rounded-xl p-6 text-center animate-on-scroll">
+        <p class="text-sm text-navy-700">
+          <strong>Note :</strong> Les rémunérations indiquées sont des fourchettes moyennes incluant le salaire de base et les primes. Les per diems (indemnités journalières) peuvent ajouter entre 2 000 et 8 000 MAD mensuels supplémentaires selon les destinations. Les salaires dans les compagnies du Golfe sont exonérés d'impôt sur le revenu.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- [High-Res WebP: Diverse group of INFOHAS graduates in different airline uniforms celebrating graduation] -->
+
+  <!-- Other Programs Section -->
+  <section class="section-padding bg-gray-50" id="autres-formations">
+    <div class="container-max">
+      <div class="text-center max-w-3xl mx-auto mb-16 animate-on-scroll">
+        <span class="badge-primary text-sm px-4 py-2 mb-4 inline-block">
+          Autres Formations
+        </span>
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-navy-900 mb-6 leading-tight">
+          Élargissez <span class="gradient-text">Vos Horizons</span>
+        </h2>
+        <p class="text-lg text-navy-600 leading-relaxed">
+          Au-delà de la formation PNC, INFOHAS Academy propose des programmes complémentaires
+          pour accéder aux métiers de l'accueil et des opérations aéroportuaires. Des formations
+          courtes et intensives pour une insertion professionnelle rapide.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {otherPrograms.map((program, i) => (
+          <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300 animate-on-scroll" style={`animation-delay: ${i * 0.15}s`}>
+            <!-- [High-Res WebP: Students in {program.title} training program in professional setting] -->
+            <div class="aspect-video bg-gradient-to-br from-primary-50 to-primary-100 flex items-center justify-center">
+              <div class="text-center p-6">
+                <svg class="w-14 h-14 text-primary-300 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <p class="text-primary-500 text-sm font-medium">{program.title}</p>
+              </div>
+            </div>
+            <div class="p-8">
+              <div class="flex items-center justify-between mb-4">
+                <span class="badge-accent text-xs">{program.badge}</span>
+                <span class="text-sm font-semibold text-navy-500 flex items-center gap-1.5">
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                  {program.duration}
+                </span>
+              </div>
+              <h3 class="text-2xl font-bold text-navy-900 mb-3">{program.title}</h3>
+              <p class="text-navy-600 text-sm leading-relaxed mb-6">{program.description}</p>
+              <div class="space-y-2">
+                {program.highlights.map((highlight) => (
+                  <div class="flex items-center gap-2 text-sm text-navy-700">
+                    <svg class="w-5 h-5 text-primary-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+                    <span>{highlight}</span>
+                  </div>
+                ))}
+              </div>
+              <div class="mt-6">
+                <a href="/inscription" class="btn-primary text-sm px-6 py-3 w-full sm:w-auto text-center">
+                  Postuler à Cette Formation
+                </a>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Career Progression Section -->
+  <section class="section-padding bg-white" id="evolution-carriere">
+    <div class="container-max">
+      <div class="text-center max-w-3xl mx-auto mb-16 animate-on-scroll">
+        <span class="badge-primary text-sm px-4 py-2 mb-4 inline-block">
+          Évolution de Carrière
+        </span>
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-navy-900 mb-6 leading-tight">
+          Un Parcours <span class="gradient-text">Sans Plafond</span>
+        </h2>
+        <p class="text-lg text-navy-600 leading-relaxed">
+          Le métier de PNC n'est pas un emploi, c'est une carrière riche en évolutions.
+          De votre premier vol comme junior jusqu'aux fonctions de supervision et de management,
+          chaque étape vous rapproche de l'excellence.
+        </p>
+      </div>
+
+      <div class="relative max-w-4xl mx-auto">
+        <!-- Connection line -->
+        <div class="hidden lg:block absolute top-24 left-0 right-0 h-0.5 bg-gradient-to-r from-primary-200 via-primary-400 to-primary-200"></div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {careerSteps.map((step, i) => (
+            <div class="relative text-center animate-on-scroll" style={`animation-delay: ${i * 0.15}s`}>
+              <!-- Step circle -->
+              <div class={`w-20 h-20 mx-auto mb-6 rounded-full flex items-center justify-center text-white font-extrabold text-xl relative z-10 ${i === 0 ? 'bg-primary-400' : i === 1 ? 'bg-primary-500' : i === 2 ? 'bg-primary-600' : 'bg-primary-700'}`}>
+                {step.step}
+              </div>
+              <span class="inline-block text-xs font-semibold text-primary-600 bg-primary-50 px-3 py-1 rounded-full mb-3">{step.subtitle}</span>
+              <h3 class="text-xl font-bold text-navy-900 mb-3">{step.title}</h3>
+              <p class="text-navy-600 text-sm leading-relaxed">{step.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- [High-Res WebP: Career progression infographic showing cabin crew member advancing through ranks] -->
+
+  <!-- Comparison / Why This Program Section -->
+  <section class="section-padding bg-gray-50" id="avantages-programme">
+    <div class="container-max">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div class="animate-on-scroll">
+          <span class="badge-primary text-sm px-4 py-2 mb-4 inline-block">
+            Notre Différence
+          </span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-navy-900 mb-6 leading-tight">
+            Pourquoi la Formation PNC d'INFOHAS <span class="gradient-text">Est la Meilleure</span>
+          </h2>
+          <div class="space-y-4">
+            {[
+              { label: 'Accréditation d\'État et homologation DGAC', detail: 'Un diplôme officiellement reconnu, pas une simple attestation privée.' },
+              { label: '820 heures de formation réparties en 11 modules', detail: 'Le programme le plus complet du Maroc, couvrant tous les aspects du métier.' },
+              { label: 'Simulateurs Boeing 737 et Airbus A320', detail: 'Entraînement dans des conditions réalistes reproduisant fidèlement l\'environnement de travail.' },
+              { label: 'Formation en anglais aéronautique (ICAO Level 4)', detail: 'Attestation de niveau linguistique indispensable pour toute compagnie internationale.' },
+              { label: 'Stages en entreprise et sessions de recrutement', detail: 'Mise en relation directe avec plus de 30 compagnies aériennes partenaires dès la formation.' },
+              { label: 'Coaching carrière et accompagnement individualisé', detail: 'Suivi personnalisé de l\'admission jusqu\'à la signature du premier contrat de travail.' }
+            ].map((item) => (
+              <div class="flex gap-4 p-4 bg-white rounded-xl border border-gray-100">
+                <div class="flex-shrink-0 w-8 h-8 bg-primary-100 rounded-lg flex items-center justify-center mt-0.5">
+                  <svg class="w-4 h-4 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-navy-900 text-sm">{item.label}</h4>
+                  <p class="text-navy-500 text-xs mt-0.5">{item.detail}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div class="animate-on-scroll">
+          <!-- [High-Res WebP: INFOHAS Academy student during practical exam on cabin simulator with instructors] -->
+          <div class="relative rounded-2xl overflow-hidden shadow-xl">
+            <div class="aspect-[4/3] bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center">
+              <div class="text-center p-8">
+                <svg class="w-16 h-16 text-primary-400 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                </svg>
+                <p class="text-primary-600 font-semibold text-sm">Photo : Entraînement pratique en simulateur</p>
+                <p class="text-primary-400 text-xs mt-1">Simulation d'évacuation d'urgence</p>
+              </div>
+            </div>
+          </div>
+          <!-- Stats callout -->
+          <div class="mt-6 bg-primary-600 text-white rounded-2xl p-6 text-center">
+            <div class="text-3xl font-extrabold mb-1">95%</div>
+            <div class="text-primary-100 text-sm">de nos diplômés trouvent un emploi dans les 6 mois</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="section-padding bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 relative overflow-hidden">
+    <div class="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+    <div class="absolute bottom-0 left-0 w-72 h-72 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2"></div>
+
+    <div class="container-max relative z-10 text-center animate-on-scroll">
+      <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+        Votre Avenir dans l'Aviation<br />Commence Aujourd'hui
+      </h2>
+      <p class="text-lg text-primary-100 max-w-2xl mx-auto mb-10 leading-relaxed">
+        Ne laissez pas les places limitées vous échapper. La prochaine session de la formation PNC
+        est sur le point de démarrer. Réservez votre place et préparez-vous à décoller vers une
+        carrière extraordinaire.
+      </p>
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="/inscription" class="inline-flex items-center justify-center px-10 py-4 bg-white text-primary-700 font-bold rounded-lg hover:bg-primary-50 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5">
+          Postuler à la Formation PNC
+          <svg class="w-5 h-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+        </a>
+        <a href="/contact" class="inline-flex items-center justify-center px-10 py-4 bg-transparent text-white font-bold rounded-lg border-2 border-white/30 hover:bg-white/10 transition-all duration-300">
+          Télécharger la Brochure
+        </a>
+      </div>
+      <p class="text-primary-200 text-sm mt-6">
+        <svg class="w-4 h-4 inline-block mr-1 -mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
+        +212 537 76 20 25 — Service des Admissions disponible du lundi au vendredi
+      </p>
+    </div>
+  </section>
+</Layout>

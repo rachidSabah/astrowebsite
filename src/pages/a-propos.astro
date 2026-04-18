@@ -1,0 +1,396 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import Stats from '../components/Stats.astro';
+
+const values = [
+  {
+    title: 'Professionnalisme',
+    description: 'L\'aviation exige la rigueur absolue. Nous inculquons à nos étudiants les standards les plus élevés de conduite, de présentation et de savoir-faire, conformes aux exigences de l\'industrie aéronautique internationale.',
+    icon: 'badge-check'
+  },
+  {
+    title: 'Engagement',
+    description: 'La réussite de chaque étudiant est notre priorité. Notre équipe pédagogique se mobilise entièrement pour offrir un accompagnement personnalisé, de l\'admission jusqu\'au premier emploi, sans jamais compromettre la qualité de l\'enseignement.',
+    icon: 'handshake'
+  },
+  {
+    title: 'Excellence',
+    description: 'Nous ne visons pas la médiocrité mais l\'excellence. Nos programmes sont régulièrement mis à jour pour intégrer les dernières évolutions réglementaires et technologiques du secteur aéronautique, garantissant une formation d\'avant-garde.',
+    icon: 'trophy'
+  },
+  {
+    title: 'Innovation',
+    description: 'De nos simulateurs de dernière génération à nos méthodes pédagogiques immersives, nous intégrons constamment les avancées technologiques pour offrir une expérience d\'apprentissage unique et préparatoire au réel.',
+    icon: 'lightbulb'
+  }
+];
+
+const facilities = [
+  {
+    title: 'Simulateurs de Cabine Boeing 737 & Airbus A320',
+    description: 'Reproduction fidèle de l\'environnement de travail réel. Les étudiants s\'entraînent aux procédures d\'évacuation d\'urgence, au service en vol et à la gestion des situations critiques dans des conditions simulées ultra-réalistes.'
+  },
+  {
+    title: 'Simulateur de Fumée et d\'Incendie',
+    description: 'Un dispositif professionnel certifié pour l\'entraînement aux procédures de lutte contre les incendies en cabine et en cuisine, incluant la manipulation des extincteurs et des masques à oxygène.'
+  },
+  {
+    title: 'Piscine de Sécurité Maritime',
+    description: 'Bassin dédié à l\'entraînement aux évacuations d\'urgence sur eau, aux techniques de survie et aux procédures de sauvetage en milieu aquatique, répondant aux normes OACI.'
+  },
+  {
+    title: 'Salles de Cours Multimédias',
+    description: 'Espaces pédagogiques équipés de technologies interactives : écrans tactiles, systèmes de vidéoconférence pour les interventions de professionnels internationaux, et ressources documentaires en ligne accessibles 24h/24.'
+  },
+  {
+    title: 'Centre de Langues',
+    description: 'Laboratoire de langues dédié à la préparation aux tests d\'anglais aéronautique (ICAO Level 4+) et à l\'amélioration des compétences linguistiques en français, anglais et arabe, clés pour une carrière internationale.'
+  },
+  {
+    title: 'Espace Bien-être & Restaurations',
+    description: 'Un campus pensé pour le confort et la concentration de nos étudiants : cafétéria, zones de détente aménagées et espaces verts pour des pauses récupératrices entre les sessions de formation intensives.'
+  }
+];
+
+const milestones = [
+  { year: '1996', event: 'Fondation d\'INFOHAS Academy à Rabat, vision pionnière de la formation aéronautique privée au Maroc.' },
+  { year: '2002', event: 'Obtention de l\'accréditation d\'État et homologation par la DGAC, validant la qualité des programmes.' },
+  { year: '2008', event: 'Inauguration des premiers simulateurs de cabine Boeing et Airbus, une première au Maroc et en Afrique du Nord.' },
+  { year: '2014', event: 'Signature des premiers partenariats de recrutement avec Emirates et Qatar Airways.' },
+  { year: '2019', event: 'Frappe du cap des 3 000 diplômés, consolidant la position de leader de l\'académie.' },
+  { year: '2024', event: 'Modernisation des infrastructures et lancement de la nouvelle plateforme d\'apprentissage en ligne.' }
+];
+
+const leadership = [
+  {
+    name: 'Direction Générale',
+    role: 'Vision & Stratégie',
+    description: 'À la tête d\'INFOHAS Academy depuis sa création, notre direction porte une vision claire : positionner le Maroc comme un hub incontournable de la formation aéronautique, en formant des talents capables de rivaliser sur la scène internationale.'
+  },
+  {
+    name: 'Direction Pédagogique',
+    role: 'Programmes & Qualité',
+    description: 'Composée d\'anciens commandants de bord, de chefs de cabine et d\'ingénieurs aéronautiques, notre équipe pédagogique veille à l\'excellence de chaque module de formation et à la conformité permanente avec les normes OACI et de l\'EASA.'
+  },
+  {
+    name: 'Cellule de Placement',
+    role: 'Carrière & Partenariats',
+    description: 'Notre département dédié au placement entretient des relations étroites avec plus de 30 compagnies aériaines. Il organise des sessions de recrutement régulières, des ateliers de préparation aux entretiens et un suivi individuel de chaque diplômé.'
+  }
+];
+---
+
+<Layout
+  title="À Propos – Notre Héritage d'Excellence Aéronautique | INFOHAS Academy"
+  description="Découvrez l'histoire d'INFOHAS Academy, académie de référence au Maroc depuis 1996. Accréditation d'État, simulateurs Boeing/Airbus, 3 500+ diplômés placés dans les plus grandes compagnies aériennes du monde."
+  breadcrumbs={[
+    { name: 'Accueil', url: '/' },
+    { name: 'À Propos', url: '/a-propos' }
+  ]}
+>
+  <!-- Hero Section -->
+  <Hero
+    title="Un Héritage d'Excellence Aéronautique Depuis 1996"
+    subtitle="Plus de trois décennies de passion, d'expertise et de dévouement au service de l'aviation. INFOHAS Academy est née d'une conviction : les talents marocains méritent la meilleure formation pour briller dans le ciel international."
+    ctaPrimary={{ label: 'Postuler Maintenant', href: '/inscription' }}
+    ctaSecondary={{ label: 'Découvrir Nos Formations', href: '/programmes' }}
+    backgroundImage="/images/about-hero.webp"
+  />
+
+  <!-- [High-Res WebP: Elegant architectural view of INFOHAS Academy building exterior in Rabat, modern facade with aviation branding] -->
+
+  <!-- Stats Section -->
+  <Stats />
+
+  <!-- Our Story Section -->
+  <section class="section-padding bg-white" id="notre-histoire">
+    <div class="container-max">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div class="animate-on-scroll">
+          <span class="badge-primary text-sm px-4 py-2 mb-4 inline-block">
+            Notre Histoire
+          </span>
+          <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-navy-900 mb-6 leading-tight">
+            D'une Vision Locale à un <span class="gradient-text">Rayonnement International</span>
+          </h2>
+          <div class="space-y-4 text-navy-600 leading-relaxed">
+            <p>
+              En 1996, INFOHAS Academy voyait le jour à Rabat avec une ambition sans précédent : offrir au Maroc et à l'Afrique du Nord une formation aéronautique d'excellence, à la hauteur des standards internationaux. À une époque où le métier de PNC était encore largement méconnu dans la région, nos fondateurs ont su identifier un potentiel immense et y répondre avec audace.
+            </p>
+            <p>
+              Dès ses premières années, l'académie a attiré des jeunes talents venus de tout le Royaume, séduits par la promesse d'une pédagogie rigoureuse et d'un accès direct aux métiers de l'air. L'obtention de l'accréditation d'État et de l'homologation DGAC en 2002 a marqué un tournant décisif, consacrant la reconnaissance institutionnelle de notre modèle éducatif.
+            </p>
+            <p>
+              Aujourd'hui, avec plus de 3 500 diplômés évoluant dans les plus grandes compagnies aériennes du monde, INFOHAS Academy incarne une success story marocaine qui inspire. Chaque promotion renforce notre conviction que le talent, lorsqu'il est bien formé, ne connaît ni frontière ni plafond. Notre mission reste intacte : ouvrir les portes du ciel à chaque nouvelle génération de passionnés.
+            </p>
+          </div>
+        </div>
+        <div class="animate-on-scroll">
+          <!-- [High-Res WebP: Historical photo montage of INFOHAS Academy evolution from 1996 to present] -->
+          <div class="relative rounded-2xl overflow-hidden shadow-xl">
+            <div class="aspect-[4/3] bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center">
+              <div class="text-center p-8">
+                <svg class="w-16 h-16 text-primary-400 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                </svg>
+                <p class="text-primary-600 font-semibold text-sm">Photo : Vue historique du campus INFOHAS Academy</p>
+                <p class="text-primary-400 text-xs mt-1">Rabat, Maroc</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Timeline Section -->
+  <section class="section-padding bg-gray-50" id="chronologie">
+    <div class="container-max">
+      <div class="text-center max-w-3xl mx-auto mb-16 animate-on-scroll">
+        <span class="badge-primary text-sm px-4 py-2 mb-4 inline-block">
+          Notre Parcours
+        </span>
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-navy-900 mb-6 leading-tight">
+          Les Étapes Clés de <span class="gradient-text">Notre Histoire</span>
+        </h2>
+      </div>
+
+      <div class="relative max-w-3xl mx-auto">
+        <!-- Vertical line -->
+        <div class="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-primary-200 md:-translate-x-px"></div>
+
+        {milestones.map((milestone, i) => (
+          <div class={`relative flex items-start gap-8 mb-10 animate-on-scroll ${i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`} style={`animation-delay: ${i * 0.15}s`}>
+            <!-- Dot -->
+            <div class="absolute left-4 md:left-1/2 w-4 h-4 bg-primary-600 rounded-full border-4 border-primary-100 -translate-x-1/2 z-10 mt-1.5"></div>
+
+            <!-- Content -->
+            <div class={`ml-12 md:ml-0 md:w-[calc(50%-2rem)] ${i % 2 === 0 ? 'md:text-right md:pr-8' : 'md:text-left md:pl-8'}`}>
+              <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                <span class="text-primary-600 font-extrabold text-lg">{milestone.year}</span>
+                <p class="text-navy-600 text-sm leading-relaxed mt-2">{milestone.event}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Values Section -->
+  <section class="section-padding bg-white" id="nos-valeurs">
+    <div class="container-max">
+      <div class="text-center max-w-3xl mx-auto mb-16 animate-on-scroll">
+        <span class="badge-primary text-sm px-4 py-2 mb-4 inline-block">
+          Nos Valeurs
+        </span>
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-navy-900 mb-6 leading-tight">
+          Les Piliers de <span class="gradient-text">Notre Identité</span>
+        </h2>
+        <p class="text-lg text-navy-600 leading-relaxed">
+          Ces quatre valeurs fondamentales guident chacune de nos décisions et imprègnent
+          notre culture institutionnelle. Elles constituent le socle sur lequel nous bâtissons
+          la réussite de nos étudiants.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+        {values.map((value, i) => (
+          <div class="card text-center group animate-on-scroll" style={`animation-delay: ${i * 0.1}s`}>
+            <div class="w-16 h-16 mx-auto mb-5 bg-primary-50 rounded-2xl flex items-center justify-center group-hover:bg-primary-100 transition-colors">
+              {value.icon === 'badge-check' && (
+                <svg class="w-8 h-8 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                </svg>
+              )}
+              {value.icon === 'handshake' && (
+                <svg class="w-8 h-8 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M7 11l5-5m0 0l5 5m-5-5v12" />
+                </svg>
+              )}
+              {value.icon === 'trophy' && (
+                <svg class="w-8 h-8 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                </svg>
+              )}
+              {value.icon === 'lightbulb' && (
+                <svg class="w-8 h-8 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                </svg>
+              )}
+            </div>
+            <h3 class="text-xl font-bold text-navy-900 mb-3">{value.title}</h3>
+            <p class="text-navy-600 leading-relaxed text-sm">{value.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- [High-Res WebP: INFOHAS Academy students engaged in interactive group learning with modern equipment] -->
+
+  <!-- Facilities Section -->
+  <section class="section-padding bg-gray-50" id="installations">
+    <div class="container-max">
+      <div class="text-center max-w-3xl mx-auto mb-16 animate-on-scroll">
+        <span class="badge-primary text-sm px-4 py-2 mb-4 inline-block">
+          Nos Installations
+        </span>
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-navy-900 mb-6 leading-tight">
+          Un Campus Conçu pour <span class="gradient-text">la Performance</span>
+        </h2>
+        <p class="text-lg text-navy-600 leading-relaxed">
+          Nos infrastructures de pointe reproduisent fidèlement l'environnement réel de travail
+          du personnel navigant, permettant à nos étudiants de se préparer dans des conditions optimales
+          avant même leur premier vol.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        {facilities.map((facility, i) => (
+          <div class="card animate-on-scroll group" style={`animation-delay: ${i * 0.1}s`}>
+            <div class="aspect-video bg-gradient-to-br from-primary-50 to-primary-100 rounded-xl mb-5 overflow-hidden flex items-center justify-center group-hover:from-primary-100 group-hover:to-primary-200 transition-all duration-300">
+              <!-- [High-Res WebP: {facility.title} - professional photo of the facility in use by students] -->
+              <svg class="w-12 h-12 text-primary-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-bold text-navy-900 mb-2">{facility.title}</h3>
+            <p class="text-navy-600 text-sm leading-relaxed">{facility.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Accreditations Section -->
+  <section class="section-padding bg-white" id="accreditations">
+    <div class="container-max">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div class="order-2 lg:order-1 animate-on-scroll">
+          <!-- [High-Res WebP: Close-up of official accreditation certificates and DGAC homologation documents displayed] -->
+          <div class="grid grid-cols-2 gap-4">
+            <div class="bg-gradient-to-br from-primary-50 to-primary-100 rounded-2xl p-8 flex flex-col items-center justify-center text-center">
+              <svg class="w-16 h-16 text-primary-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+              <span class="font-bold text-navy-900 text-sm">Accréditation d'État</span>
+              <span class="text-xs text-navy-500 mt-1">Royaume du Maroc</span>
+            </div>
+            <div class="bg-gradient-to-br from-accent-50 to-accent-100 rounded-2xl p-8 flex flex-col items-center justify-center text-center">
+              <svg class="w-16 h-16 text-accent-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" />
+              </svg>
+              <span class="font-bold text-navy-900 text-sm">Homologation DGAC</span>
+              <span class="text-xs text-navy-500 mt-1">Aviation Civile</span>
+            </div>
+            <div class="bg-gradient-to-br from-primary-50 to-primary-100 rounded-2xl p-8 flex flex-col items-center justify-center text-center">
+              <svg class="w-16 h-16 text-primary-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span class="font-bold text-navy-900 text-sm">Normes OACI</span>
+              <span class="text-xs text-navy-500 mt-1">International</span>
+            </div>
+            <div class="bg-gradient-to-br from-accent-50 to-accent-100 rounded-2xl p-8 flex flex-col items-center justify-center text-center">
+              <svg class="w-16 h-16 text-accent-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+              </svg>
+              <span class="font-bold text-navy-900 text-sm">ISO 9001</span>
+              <span class="text-xs text-navy-500 mt-1">Qualité</span>
+            </div>
+          </div>
+        </div>
+        <div class="order-1 lg:order-2 animate-on-scroll">
+          <span class="badge-primary text-sm px-4 py-2 mb-4 inline-block">
+            Accréditations & Reconnaissances
+          </span>
+          <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-navy-900 mb-6 leading-tight">
+            Des Garanties <span class="gradient-text">Institutionnelles</span> Solides
+          </h2>
+          <div class="space-y-4 text-navy-600 leading-relaxed">
+            <p>
+              La crédibilité d'une formation repose avant tout sur ses accréditations. INFOHAS Academy est fière de détenir les reconnaissances les plus exigeantes du secteur aéronautique, témoignant de la qualité irréprochable de nos programmes et de nos installations.
+            </p>
+            <p>
+              Notre accréditation d'État, délivrée par les autorités marocaines compétentes, garantit que notre programme de formation PNC répond aux exigences légales et pédagogiques en vigueur. Elle confère à nos diplômés un titre officiellement reconnu sur le marché de l'emploi national et international.
+            </p>
+            <p>
+              L'homologation par la DGAC (Direction Générale de l'Aviation Civile) constitue le sceau de conformité aux normes de sécurité et de compétence les plus strictes. Cette homologation, couplée à notre adhésion aux standards de l'OACI (Organisation de l'Aviation Civile Internationale), assure que nos diplômés sont immédiatement opérationnels dès leur embauche.
+            </p>
+          </div>
+          <div class="mt-8 flex flex-wrap gap-4">
+            <a href="/programmes" class="btn-primary text-sm px-6 py-3">
+              Consulter Nos Programmes
+            </a>
+            <a href="/contact" class="btn-secondary text-sm px-6 py-3">
+              Demander des Informations
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Leadership / Team Section -->
+  <section class="section-padding bg-gray-50" id="equipe">
+    <div class="container-max">
+      <div class="text-center max-w-3xl mx-auto mb-16 animate-on-scroll">
+        <span class="badge-primary text-sm px-4 py-2 mb-4 inline-block">
+          Notre Équipe
+        </span>
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-navy-900 mb-6 leading-tight">
+          Les Architectes de <span class="gradient-text">Votre Réussite</span>
+        </h2>
+        <p class="text-lg text-navy-600 leading-relaxed">
+          Derrière chaque promotion réussie, il y a une équipe de passionnés. Formateurs chevronnés,
+          conseillers dédiés et experts opérationnels conjuguent leurs talents pour offrir
+          à chaque étudiant une expérience formatrice transformante.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {leadership.map((member, i) => (
+          <div class="card text-center animate-on-scroll" style={`animation-delay: ${i * 0.15}s`}>
+            <!-- [High-Res WebP: Professional headshot of {member.name} - {member.role}] -->
+            <div class="w-24 h-24 mx-auto mb-5 bg-gradient-to-br from-primary-100 to-primary-200 rounded-full flex items-center justify-center">
+              <svg class="w-12 h-12 text-primary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-navy-900 mb-1">{member.name}</h3>
+            <span class="text-primary-600 text-sm font-semibold">{member.role}</span>
+            <p class="text-navy-600 text-sm leading-relaxed mt-4">{member.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- [High-Res WebP: Panoramic view of INFOHAS Academy team and students gathered for a graduation ceremony] -->
+
+  <!-- CTA Section -->
+  <section class="section-padding bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 relative overflow-hidden">
+    <div class="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+    <div class="absolute bottom-0 left-0 w-72 h-72 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2"></div>
+
+    <div class="container-max relative z-10 text-center animate-on-scroll">
+      <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+        Rejoignez l'Héritage<br />d'INFOHAS Academy
+      </h2>
+      <p class="text-lg text-primary-100 max-w-2xl mx-auto mb-10 leading-relaxed">
+        Vous aussi, écrivez votre chapitre dans cette histoire d'excellence. Les portes de notre académie
+        sont ouvertes à tous ceux qui rêvent de toucher le ciel. Prenez les commandes de votre avenir dès aujourd'hui.
+      </p>
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="/inscription" class="inline-flex items-center justify-center px-10 py-4 bg-white text-primary-700 font-bold rounded-lg hover:bg-primary-50 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5">
+          Postuler Maintenant
+          <svg class="w-5 h-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+        </a>
+        <a href="/contact" class="inline-flex items-center justify-center px-10 py-4 bg-transparent text-white font-bold rounded-lg border-2 border-white/30 hover:bg-white/10 transition-all duration-300">
+          Prendre Rendez-vous
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>

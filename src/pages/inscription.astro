@@ -1,0 +1,519 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const breadcrumbs = [
+  { name: 'Accueil', url: '/' },
+  { name: 'Inscription', url: '/inscription' },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: 'Inscription - INFOHAS Academy',
+  description: 'Inscrivez-vous aux formations professionnelles en aviation d\'INFOHAS Academy. Hôtesse de l\'Air, Steward, Hôtesse d\'Accueil, Agent Aéroportuaire.',
+  breadcrumb: {
+    '@type': 'BreadcrumbList',
+    itemListElement: breadcrumbs.map((item, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: item.name,
+      item: `https://infohas-academy.pages.dev${item.url}`,
+    }))
+  }
+};
+---
+
+<Layout
+  title="Inscription aux Formations Aviation"
+  description="Inscrivez-vous aux formations professionnelles en aviation d'INFOHAS Academy. Devenez Hôtesse de l'Air, Steward, Hôtesse d'Accueil ou Agent Aéroportuaire."
+  breadcrumbs={breadcrumbs}
+  jsonLd={jsonLd}
+>
+  <!-- Hero Section -->
+  <section class="relative bg-navy-950 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-navy-950 via-primary-950 to-navy-900"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-navy-950/90 via-navy-950/60 to-transparent"></div>
+    <div class="absolute top-20 right-20 w-72 h-72 bg-primary-500/10 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-10 left-10 w-96 h-96 bg-accent-500/5 rounded-full blur-3xl"></div>
+
+    <div class="container-max relative z-10 py-20 md:py-28">
+      <div class="max-w-3xl">
+        <span class="badge-primary text-sm px-4 py-2 inline-flex items-center mb-6">
+          <span class="inline-block w-2 h-2 bg-primary-500 rounded-full mr-2 animate-pulse"></span>
+          Inscriptions ouvertes
+        </span>
+
+        <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-[1.1] mb-6 text-balance animate-fade-in">
+          Rejoignez l'Élite du <span class="gradient-text">Personnel Navigant</span>
+        </h1>
+
+        <p class="text-lg sm:text-xl text-navy-200 leading-relaxed max-w-2xl mb-8 animate-fade-in" style="animation-delay: 0.15s">
+          Démarrez votre carrière dans l'aviation avec une formation reconnue par les plus grandes compagnies aériennes. Remplissez le formulaire ci-dessous pour soumettre votre candidature.
+        </p>
+
+        <div class="flex flex-wrap gap-6 text-sm animate-fade-in" style="animation-delay: 0.3s">
+          <div class="flex items-center gap-2 text-navy-300">
+            <svg class="w-5 h-5 text-primary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>Diplôme accrédité par l'État</span>
+          </div>
+          <div class="flex items-center gap-2 text-navy-300">
+            <svg class="w-5 h-5 text-primary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>95% de taux de placement</span>
+          </div>
+          <div class="flex items-center gap-2 text-navy-300">
+            <svg class="w-5 h-5 text-primary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>+30 ans d'expertise</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Form + Sidebar -->
+  <section class="section-padding bg-gray-50">
+    <div class="container-max">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+
+        <!-- Enrollment Form -->
+        <div class="lg:col-span-2 animate-on-scroll">
+          <div class="card p-0 overflow-hidden">
+            <div class="bg-gradient-to-r from-primary-600 to-primary-800 px-6 md:px-8 py-6">
+              <h2 class="text-2xl font-bold text-white">Formulaire de Candidature</h2>
+              <p class="text-primary-100 text-sm mt-1">Les champs marqués d'un astérisque (*) sont obligatoires.</p>
+            </div>
+
+            <form id="enrollment-form" class="p-6 md:p-8 space-y-6" novalidate>
+              <!-- Name Row -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label for="first_name" class="label-text">Prénom *</label>
+                  <input
+                    type="text"
+                    id="first_name"
+                    name="first_name"
+                    required
+                    class="input-field"
+                    placeholder="Votre prénom"
+                    autocomplete="given-name"
+                  />
+                  <p class="text-red-500 text-xs mt-1 hidden" data-error="first_name"></p>
+                </div>
+                <div>
+                  <label for="last_name" class="label-text">Nom *</label>
+                  <input
+                    type="text"
+                    id="last_name"
+                    name="last_name"
+                    required
+                    class="input-field"
+                    placeholder="Votre nom de famille"
+                    autocomplete="family-name"
+                  />
+                  <p class="text-red-500 text-xs mt-1 hidden" data-error="last_name"></p>
+                </div>
+              </div>
+
+              <!-- Email + Phone Row -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label for="email" class="label-text">Adresse Email *</label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    required
+                    class="input-field"
+                    placeholder="votre.email@exemple.com"
+                    autocomplete="email"
+                  />
+                  <p class="text-red-500 text-xs mt-1 hidden" data-error="email"></p>
+                </div>
+                <div>
+                  <label for="phone" class="label-text">Téléphone *</label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    required
+                    class="input-field"
+                    placeholder="06XXXXXXXX"
+                    autocomplete="tel"
+                  />
+                  <p class="text-red-500 text-xs mt-1 hidden" data-error="phone"></p>
+                </div>
+              </div>
+
+              <!-- Date of Birth -->
+              <div>
+                <label for="date_of_birth" class="label-text">Date de naissance *</label>
+                <input
+                  type="date"
+                  id="date_of_birth"
+                  name="date_of_birth"
+                  required
+                  class="input-field"
+                  autocomplete="bday"
+                />
+                <p class="text-red-500 text-xs mt-1 hidden" data-error="date_of_birth"></p>
+              </div>
+
+              <!-- Education + City Row -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label for="education_level" class="label-text">Niveau d'études *</label>
+                  <select id="education_level" name="education_level" required class="input-field">
+                    <option value="" disabled selected>Sélectionnez votre niveau</option>
+                    <option value="Baccalauréat">Baccalauréat</option>
+                    <option value="Bac+2">Bac+2</option>
+                    <option value="Bac+3">Bac+3 (Licence)</option>
+                    <option value="Bac+4">Bac+4</option>
+                    <option value="Master">Master</option>
+                    <option value="Autre">Autre</option>
+                  </select>
+                  <p class="text-red-500 text-xs mt-1 hidden" data-error="education_level"></p>
+                </div>
+                <div>
+                  <label for="city" class="label-text">Ville *</label>
+                  <input
+                    type="text"
+                    id="city"
+                    name="city"
+                    required
+                    class="input-field"
+                    placeholder="Votre ville de résidence"
+                    autocomplete="address-level2"
+                  />
+                  <p class="text-red-500 text-xs mt-1 hidden" data-error="city"></p>
+                </div>
+              </div>
+
+              <!-- Program Selection -->
+              <div>
+                <label for="program" class="label-text">Programme souhaité *</label>
+                <select id="program" name="program" required class="input-field">
+                  <option value="" disabled selected>Sélectionnez votre formation</option>
+                  <option value="Formation Hôtesse de l'Air & Steward (PNC)">Formation Hôtesse de l'Air & Steward (PNC)</option>
+                  <option value="Formation Hôtesse d'Accueil">Formation Hôtesse d'Accueil</option>
+                  <option value="Formation Agent de Services Aéroportuaires">Formation Agent de Services Aéroportuaires</option>
+                </select>
+                <p class="text-red-500 text-xs mt-1 hidden" data-error="program"></p>
+              </div>
+
+              <!-- Consent -->
+              <div class="flex items-start gap-3 p-4 bg-primary-50 rounded-lg border border-primary-100">
+                <input
+                  type="checkbox"
+                  id="consent"
+                  name="consent"
+                  required
+                  class="mt-1 w-4 h-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                />
+                <label for="consent" class="text-sm text-navy-700 leading-relaxed">
+                  J'accepte que mes données personnelles soient traitées par INFOHAS Academy dans le cadre de ma demande d'inscription, conformément à notre
+                  <a href="/mentions-legales" class="text-primary-600 underline hover:text-primary-700" target="_blank">politique de confidentialité</a>. *
+                </label>
+              </div>
+              <p class="text-red-500 text-xs -mt-4 hidden" data-error="consent"></p>
+
+              <!-- Submit -->
+              <div class="pt-2">
+                <button
+                  type="submit"
+                  id="submit-btn"
+                  class="btn-primary w-full sm:w-auto text-base px-10 py-4 flex items-center justify-center gap-2"
+                >
+                  <span id="submit-text">Soumettre ma Candidature</span>
+                  <svg id="submit-icon" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                  <svg id="submit-spinner" class="w-5 h-5 animate-spin hidden" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                </button>
+              </div>
+
+              <!-- Messages -->
+              <div id="form-success" class="hidden p-4 bg-green-50 border border-green-200 rounded-lg">
+                <div class="flex items-start gap-3">
+                  <svg class="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <div>
+                    <p class="font-semibold text-green-800">Candidature envoyée avec succès !</p>
+                    <p class="text-green-700 text-sm mt-1">Notre équipe vous contactera dans les plus brefs délais.</p>
+                  </div>
+                </div>
+              </div>
+              <div id="form-error" class="hidden p-4 bg-red-50 border border-red-200 rounded-lg">
+                <div class="flex items-start gap-3">
+                  <svg class="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <div>
+                    <p class="font-semibold text-red-800">Erreur lors de l'envoi</p>
+                    <p id="form-error-message" class="text-red-700 text-sm mt-1"></p>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="space-y-6">
+          <!-- Prerequisites -->
+          <div class="card animate-on-scroll">
+            <div class="flex items-center gap-3 mb-5">
+              <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center">
+                <svg class="w-5 h-5 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                </svg>
+              </div>
+              <h3 class="text-lg font-bold text-navy-800">Prérequis</h3>
+            </div>
+            <ul class="space-y-3">
+              <li class="flex items-start gap-2.5 text-sm text-navy-600">
+                <svg class="w-4 h-4 text-primary-500 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+                <span>Niveau Baccalauréat minimum</span>
+              </li>
+              <li class="flex items-start gap-2.5 text-sm text-navy-600">
+                <svg class="w-4 h-4 text-primary-500 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+                <span>Âge : 18 ans minimum</span>
+              </li>
+              <li class="flex items-start gap-2.5 text-sm text-navy-600">
+                <svg class="w-4 h-4 text-primary-500 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+                <span>Bonne présentation et excellente hygiène</span>
+              </li>
+              <li class="flex items-start gap-2.5 text-sm text-navy-600">
+                <svg class="w-4 h-4 text-primary-500 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+                <span>Maîtrise du français et de l'anglais</span>
+              </li>
+              <li class="flex items-start gap-2.5 text-sm text-navy-600">
+                <svg class="w-4 h-4 text-primary-500 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+                <span>Aptitude physique et médicale</span>
+              </li>
+              <li class="flex items-start gap-2.5 text-sm text-navy-600">
+                <svg class="w-4 h-4 text-primary-500 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+                <span>Savoir-vivre et sens du service</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Documents Needed -->
+          <div class="card animate-on-scroll">
+            <div class="flex items-center gap-3 mb-5">
+              <div class="w-10 h-10 bg-accent-100 rounded-lg flex items-center justify-center">
+                <svg class="w-5 h-5 text-accent-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+              <h3 class="text-lg font-bold text-navy-800">Documents à Fournir</h3>
+            </div>
+            <ul class="space-y-3">
+              <li class="flex items-start gap-2.5 text-sm text-navy-600">
+                <svg class="w-4 h-4 text-accent-600 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                <span>Copie de la CIN ou passeport</span>
+              </li>
+              <li class="flex items-start gap-2.5 text-sm text-navy-600">
+                <svg class="w-4 h-4 text-accent-600 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                <span>Copie du diplôme le plus élevé</span>
+              </li>
+              <li class="flex items-start gap-2.5 text-sm text-navy-600">
+                <svg class="w-4 h-4 text-accent-600 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                <span>Curriculum Vitae à jour</span>
+              </li>
+              <li class="flex items-start gap-2.5 text-sm text-navy-600">
+                <svg class="w-4 h-4 text-accent-600 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                <span>4 photos d'identité récentes</span>
+              </li>
+              <li class="flex items-start gap-2.5 text-sm text-navy-600">
+                <svg class="w-4 h-4 text-accent-600 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                <span>Certificat médical de non-contre-indication</span>
+              </li>
+              <li class="flex items-start gap-2.5 text-sm text-navy-600">
+                <svg class="w-4 h-4 text-accent-600 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                <span>Dossier complet à remettre lors de l'entretien</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Contact Info -->
+          <div class="card animate-on-scroll">
+            <div class="flex items-center gap-3 mb-5">
+              <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center">
+                <svg class="w-5 h-5 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                </svg>
+              </div>
+              <h3 class="text-lg font-bold text-navy-800">Besoin d'Aide ?</h3>
+            </div>
+            <ul class="space-y-4">
+              <li class="flex items-center gap-3 text-sm text-navy-600">
+                <svg class="w-5 h-5 text-primary-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
+                <a href="tel:+212537762025" class="hover:text-primary-600 transition-colors font-medium">+212 537 76 20 25</a>
+              </li>
+              <li class="flex items-center gap-3 text-sm text-navy-600">
+                <svg class="w-5 h-5 text-primary-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                <a href="mailto:contact@infohas.ma" class="hover:text-primary-600 transition-colors font-medium">contact@infohas.ma</a>
+              </li>
+              <li class="flex items-start gap-3 text-sm text-navy-600">
+                <svg class="w-5 h-5 text-primary-500 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                <span>15 Rue Demnate, Hassan, Rabat</span>
+              </li>
+            </ul>
+            <div class="mt-5 pt-5 border-t border-gray-100">
+              <p class="text-xs text-navy-400">
+                <svg class="w-4 h-4 inline mr-1 -mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                Horaires : Lun - Ven, 9h00 - 18h00
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Bottom -->
+  <section class="section-padding bg-white animate-on-scroll">
+    <div class="container-max text-center">
+      <div class="max-w-2xl mx-auto">
+        <h2 class="text-3xl font-bold text-navy-900 mb-4">Vous Avez des Questions ?</h2>
+        <p class="text-navy-600 mb-8">
+          Notre équipe d'admissions est à votre disposition pour vous accompagner dans votre projet professionnel. N'hésitez pas à nous contacter.
+        </p>
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a href="/contact" class="btn-secondary">
+            Nous Contacter
+            <svg class="w-5 h-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+          </a>
+          <a href="/programmes" class="btn-primary">
+            Voir les Programmes
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  const form = document.getElementById('enrollment-form') as HTMLFormElement;
+  const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+  const submitText = document.getElementById('submit-text') as HTMLElement;
+  const submitIcon = document.getElementById('submit-icon') as HTMLElement;
+  const submitSpinner = document.getElementById('submit-spinner') as HTMLElement;
+  const successMsg = document.getElementById('form-success')!;
+  const errorMsg = document.getElementById('form-error')!;
+  const errorMessage = document.getElementById('form-error-message')!;
+
+  function showError(field: string, message: string) {
+    const el = document.querySelector(`[data-error="${field}"]`) as HTMLElement;
+    if (el) {
+      el.textContent = message;
+      el.classList.remove('hidden');
+    }
+    const input = form?.querySelector(`[name="${field}"]`) as HTMLElement;
+    if (input) input.classList.add('border-red-400', 'ring-1', 'ring-red-200');
+  }
+
+  function clearErrors() {
+    document.querySelectorAll('[data-error]').forEach(el => {
+      el.classList.add('hidden');
+      el.textContent = '';
+    });
+    form?.querySelectorAll('.input-field').forEach(el => {
+      el.classList.remove('border-red-400', 'ring-1', 'ring-red-200');
+    });
+    errorMsg.classList.add('hidden');
+    successMsg.classList.add('hidden');
+  }
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    clearErrors();
+
+    const firstName = (form.querySelector('[name="first_name"]') as HTMLInputElement).value.trim();
+    const lastName = (form.querySelector('[name="last_name"]') as HTMLInputElement).value.trim();
+    const email = (form.querySelector('[name="email"]') as HTMLInputElement).value.trim();
+    const phone = (form.querySelector('[name="phone"]') as HTMLInputElement).value.trim();
+    const dateOfBirth = (form.querySelector('[name="date_of_birth"]') as HTMLInputElement).value;
+    const educationLevel = (form.querySelector('[name="education_level"]') as HTMLSelectElement).value;
+    const city = (form.querySelector('[name="city"]') as HTMLInputElement).value.trim();
+    const program = (form.querySelector('[name="program"]') as HTMLSelectElement).value;
+    const consent = (form.querySelector('[name="consent"]') as HTMLInputElement).checked;
+
+    let valid = true;
+
+    if (!firstName) { showError('first_name', 'Le prénom est requis.'); valid = false; }
+    if (!lastName) { showError('last_name', 'Le nom est requis.'); valid = false; }
+    if (!email) {
+      showError('email', 'L\'adresse email est requise.');
+      valid = false;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      showError('email', 'Veuillez entrer une adresse email valide.');
+      valid = false;
+    }
+    if (!phone) {
+      showError('phone', 'Le numéro de téléphone est requis.');
+      valid = false;
+    } else if (!/^(0[5-7]\d{8}|\+212[5-7]\d{8})$/.test(phone.replace(/\s/g, ''))) {
+      showError('phone', 'Format : 06XXXXXXXX ou +2126XXXXXXXX');
+      valid = false;
+    }
+    if (!dateOfBirth) { showError('date_of_birth', 'La date de naissance est requise.'); valid = false; }
+    if (!educationLevel) { showError('education_level', 'Veuillez sélectionner votre niveau d\'études.'); valid = false; }
+    if (!city) { showError('city', 'La ville est requise.'); valid = false; }
+    if (!program) { showError('program', 'Veuillez sélectionner un programme.'); valid = false; }
+    if (!consent) { showError('consent', 'Vous devez accepter le traitement de vos données.'); valid = false; }
+
+    if (!valid) return;
+
+    // Show loading state
+    submitBtn.disabled = true;
+    submitText.textContent = 'Envoi en cours...';
+    submitIcon.classList.add('hidden');
+    submitSpinner.classList.remove('hidden');
+
+    try {
+      const response = await fetch('/api/enrollment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          first_name: firstName,
+          last_name: lastName,
+          email,
+          phone,
+          date_of_birth: dateOfBirth,
+          education_level: educationLevel,
+          city,
+          program,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        successMsg.classList.remove('hidden');
+        form.reset();
+        window.scrollTo({ top: form.offsetTop - 100, behavior: 'smooth' });
+      } else {
+        errorMessage.textContent = data.error || 'Une erreur est survenue. Veuillez réessayer.';
+        errorMsg.classList.remove('hidden');
+      }
+    } catch (err) {
+      errorMessage.textContent = 'Erreur de connexion. Vérifiez votre connexion internet et réessayez.';
+      errorMsg.classList.remove('hidden');
+    } finally {
+      submitBtn.disabled = false;
+      submitText.textContent = 'Soumettre ma Candidature';
+      submitIcon.classList.remove('hidden');
+      submitSpinner.classList.add('hidden');
+    }
+  });
+</script>

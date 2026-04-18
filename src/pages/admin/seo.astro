@@ -1,0 +1,337 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getDB, getAllPages } from '../../lib/db';
+import { requireAuth } from '../../lib/auth';
+
+const auth = await requireAuth(Astro.request, getDB(Astro));
+if (!auth) return Astro.redirect('/admin/login');
+
+const db = getDB(Astro);
+const pagesResult = await getAllPages(db);
+const pagesList = (pagesResult.results as any[]) || [];
+const siteUrl = 'https://infohas-academy.pages.dev';
+---
+
+<Layout title="SEO & Meta — Administration" description="" noindex={true}>
+  <div class="flex min-h-[calc(100vh-200px)]">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-navy-900 text-white flex-shrink-0 hidden lg:flex flex-col">
+      <div class="p-6 border-b border-navy-700">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center">
+            <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+          </div>
+          <div>
+            <p class="font-bold text-sm">INFOHAS Academy</p>
+            <p class="text-xs text-navy-400">Administration</p>
+          </div>
+        </div>
+      </div>
+      <nav class="flex-1 p-4 space-y-1">
+        <a href="/admin" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-navy-300 hover:bg-navy-800 hover:text-white transition-colors">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0h4" /></svg>
+          Tableau de bord
+        </a>
+        <a href="/admin/submissions" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-navy-300 hover:bg-navy-800 hover:text-white transition-colors">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+          Candidatures
+        </a>
+        <a href="/admin/content" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-navy-300 hover:bg-navy-800 hover:text-white transition-colors">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+          Contenu
+        </a>
+        <a href="/admin/seo" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium bg-navy-800 text-white">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+          SEO & Meta
+        </a>
+        <a href="/admin/redirects" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-navy-300 hover:bg-navy-800 hover:text-white transition-colors">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
+          Redirections
+        </a>
+      </nav>
+      <div class="p-4 border-t border-navy-700">
+        <div class="flex items-center gap-3 px-3 py-2 mb-2">
+          <div class="w-8 h-8 bg-primary-600 rounded-full flex items-center justify-center text-sm font-bold">
+            {(auth.username || 'A').charAt(0).toUpperCase()}
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-medium truncate">{auth.username}</p>
+            <p class="text-xs text-navy-400">Administrateur</p>
+          </div>
+        </div>
+        <button id="logout-btn" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-navy-300 hover:bg-red-900/50 hover:text-red-300 transition-colors">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+          Déconnexion
+        </button>
+      </div>
+    </aside>
+
+    <!-- Mobile Header -->
+    <div class="lg:hidden fixed top-0 left-0 right-0 z-50 bg-navy-900 text-white px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center">
+          <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+        </div>
+        <span class="font-bold text-sm">Admin</span>
+      </div>
+      <button id="mobile-menu-btn" class="p-2 rounded-lg hover:bg-navy-800">
+        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden fixed inset-0 z-40 lg:hidden">
+      <div class="absolute inset-0 bg-black/50" id="mobile-menu-overlay"></div>
+      <div class="absolute left-0 top-0 bottom-0 w-64 bg-navy-900 text-white flex flex-col">
+        <div class="p-6 border-b border-navy-700">
+          <p class="font-bold text-sm">INFOHAS Academy — Administration</p>
+        </div>
+        <nav class="flex-1 p-4 space-y-1">
+          <a href="/admin" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-navy-300 hover:bg-navy-800 hover:text-white transition-colors">Tableau de bord</a>
+          <a href="/admin/submissions" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-navy-300 hover:bg-navy-800 hover:text-white transition-colors">Candidatures</a>
+          <a href="/admin/content" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-navy-300 hover:bg-navy-800 hover:text-white transition-colors">Contenu</a>
+          <a href="/admin/seo" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium bg-navy-800 text-white">SEO & Meta</a>
+          <a href="/admin/redirects" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-navy-300 hover:bg-navy-800 hover:text-white transition-colors">Redirections</a>
+        </nav>
+        <div class="p-4 border-t border-navy-700">
+          <button id="logout-btn-mobile" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-navy-300 hover:bg-red-900/50 hover:text-red-300 transition-colors">Déconnexion</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 bg-gray-50 lg:bg-white pt-16 lg:pt-0">
+      <div class="p-6 lg:p-8 max-w-7xl">
+        <!-- Page Header -->
+        <div class="mb-6">
+          <h1 class="text-2xl lg:text-3xl font-bold text-navy-900">SEO & Métadonnées</h1>
+          <p class="text-navy-500 mt-1">Gérez les titres, descriptions et données Open Graph pour chaque page.</p>
+        </div>
+
+        {pagesList.length === 0 ? (
+          <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-12 text-center">
+            <svg class="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <p class="text-navy-500 font-medium">Aucune page configurée</p>
+            <p class="text-sm text-navy-400 mt-1">Ajoutez du contenu via l'API pour gérer le SEO.</p>
+          </div>
+        ) : pagesList.map((page: any) => (
+          <div class="seo-card bg-white rounded-xl border border-gray-100 shadow-sm mb-6 overflow-hidden" data-route={page.route}>
+            <button class="seo-toggle w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors text-left">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <svg class="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                </div>
+                <div>
+                  <p class="text-sm font-semibold text-navy-800">{page.route}</p>
+                  <p class="text-xs text-navy-400">{siteUrl}/{page.route}</p>
+                </div>
+              </div>
+              <!-- SEO score indicator -->
+              <div class="flex items-center gap-3">
+                <div class="hidden sm:flex items-center gap-1 text-xs">
+                  <span class={`w-2 h-2 rounded-full ${(page.meta_title && page.meta_description) ? 'bg-green-400' : 'bg-red-400'}`}></span>
+                  <span class="text-navy-400">{(page.meta_title && page.meta_description) ? 'Optimisé' : 'À compléter'}</span>
+                </div>
+                <svg class="w-5 h-5 text-navy-400 transition-transform seo-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+              </div>
+            </button>
+
+            <div class="seo-form hidden border-t border-gray-100">
+              <div class="p-6 space-y-6">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <!-- Edit Form -->
+                  <div class="space-y-4">
+                    <h3 class="text-sm font-bold text-navy-700 uppercase tracking-wider">Édition SEO</h3>
+                    <form class="seo-edit-form space-y-4" data-route={page.route}>
+                      <div>
+                        <label class="label-text">Meta Title</label>
+                        <input type="text" name="meta_title" value={page.meta_title || ''} class="input-field seo-meta-title" placeholder="Titre pour Google (max 60 caractères)" maxlength="70" />
+                        <div class="flex justify-between mt-1">
+                          <p class="text-xs text-navy-400">Optimal: 30-60 caractères</p>
+                          <p class="text-xs font-medium"><span class="seo-title-count">{(page.meta_title || '').length}</span>/70</p>
+                        </div>
+                      </div>
+                      <div>
+                        <label class="label-text">Meta Description</label>
+                        <textarea name="meta_description" class="input-field seo-meta-desc" rows="3" placeholder="Description pour Google (max 160 caractères)" maxlength="160">{page.meta_description || ''}</textarea>
+                        <div class="flex justify-between mt-1">
+                          <p class="text-xs text-navy-400">Optimal: 120-160 caractères</p>
+                          <p class="text-xs font-medium"><span class="seo-desc-count">{(page.meta_description || '').length}</span>/160</p>
+                        </div>
+                      </div>
+                      <div>
+                        <label class="label-text">OG Title (Open Graph)</label>
+                        <input type="text" name="og_title" value={page.og_title || ''} class="input-field seo-og-title" placeholder="Titre pour réseaux sociaux" />
+                      </div>
+                      <div>
+                        <label class="label-text">OG Description (Open Graph)</label>
+                        <textarea name="og_description" class="input-field seo-og-desc" rows="2" placeholder="Description pour réseaux sociaux">{page.og_description || ''}</textarea>
+                      </div>
+                      <div>
+                        <label class="label-text">OG Image URL</label>
+                        <input type="text" name="og_image" value={page.og_image || ''} class="input-field" placeholder="https://example.com/og-image.jpg" />
+                      </div>
+                      <div class="flex items-center gap-3 pt-2">
+                        <button type="submit" class="save-seo-btn btn-primary px-6 py-2 text-sm">
+                          <span class="save-seo-text">Enregistrer SEO</span>
+                          <svg class="save-seo-spinner hidden w-4 h-4 animate-spin ml-1" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+                        </button>
+                        <span class="save-seo-toast hidden text-green-600 text-sm font-medium">✓ Enregistré !</span>
+                      </div>
+                    </form>
+                  </div>
+
+                  <!-- Google Preview -->
+                  <div class="space-y-4">
+                    <h3 class="text-sm font-bold text-navy-700 uppercase tracking-wider">Aperçu Google</h3>
+                    <div class="bg-white border border-gray-200 rounded-xl p-5 space-y-2">
+                      <div class="text-xs text-navy-400 truncate">{siteUrl}/{page.route}</div>
+                      <div class="text-lg text-blue-700 leading-snug seo-preview-title truncate hover:underline cursor-pointer">
+                        {page.meta_title || 'Titre de la page non défini'}
+                      </div>
+                      <div class="text-sm text-green-700 leading-snug seo-preview-desc line-clamp-2">
+                        {page.meta_description || 'Ajoutez une meta description pour améliorer le référencement de cette page...'}
+                      </div>
+                    </div>
+
+                    <h3 class="text-sm font-bold text-navy-700 uppercase tracking-wider mt-6">Aperçu Réseaux Sociaux</h3>
+                    <div class="border border-gray-200 rounded-xl overflow-hidden max-w-sm">
+                      <div class="bg-gray-100 h-40 flex items-center justify-center seo-preview-og-image">
+                        {page.og_image ? (
+                          <img src={page.og_image} alt="OG Preview" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<div class=\'text-gray-400 text-sm\'>Image non disponible</div>'" />
+                        ) : (
+                          <div class="text-gray-400 text-sm text-center px-4">
+                            <svg class="w-8 h-8 mx-auto mb-1 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                            OG Image non définie
+                          </div>
+                        )}
+                      </div>
+                      <div class="p-3 bg-white">
+                        <p class="text-xs text-gray-500 uppercase truncate">{siteUrl}</p>
+                        <p class="text-sm font-semibold text-navy-800 mt-1 seo-preview-og-title truncate">
+                          {page.og_title || page.meta_title || 'Titre non défini'}
+                        </p>
+                        <p class="text-xs text-navy-500 mt-1 seo-preview-og-desc line-clamp-2">
+                          {page.og_description || page.meta_description || 'Description non définie'}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  // ---- Logout ----
+  async function doLogout() {
+    try { await fetch('/api/admin/logout', { method: 'POST' }); } catch {}
+    window.location.href = '/admin/login';
+  }
+  document.getElementById('logout-btn')?.addEventListener('click', doLogout);
+  document.getElementById('logout-btn-mobile')?.addEventListener('click', doLogout);
+
+  // ---- Mobile Menu ----
+  const mobileMenu = document.getElementById('mobile-menu');
+  document.getElementById('mobile-menu-btn')?.addEventListener('click', () => mobileMenu?.classList.toggle('hidden'));
+  document.getElementById('mobile-menu-overlay')?.addEventListener('click', () => mobileMenu?.classList.add('hidden'));
+
+  // ---- Toggle SEO panels ----
+  document.querySelectorAll('.seo-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const card = btn.closest('.seo-card');
+      const form = card?.querySelector('.seo-form') as HTMLElement;
+      const chevron = btn.querySelector('.seo-chevron');
+      if (form) {
+        form.classList.toggle('hidden');
+        chevron?.classList.toggle('rotate-180');
+      }
+    });
+  });
+
+  // ---- Live preview updates ----
+  document.querySelectorAll('.seo-card').forEach(card => {
+    const metaTitle = card.querySelector('.seo-meta-title') as HTMLInputElement;
+    const metaDesc = card.querySelector('.seo-meta-desc') as HTMLTextAreaElement;
+    const ogTitle = card.querySelector('.seo-og-title') as HTMLInputElement;
+    const ogDesc = card.querySelector('.seo-og-desc') as HTMLTextAreaElement;
+    const previewTitle = card.querySelector('.seo-preview-title');
+    const previewDesc = card.querySelector('.seo-preview-desc');
+    const previewOgTitle = card.querySelector('.seo-preview-og-title');
+    const previewOgDesc = card.querySelector('.seo-preview-og-desc');
+    const titleCount = card.querySelector('.seo-title-count');
+    const descCount = card.querySelector('.seo-desc-count');
+
+    metaTitle?.addEventListener('input', () => {
+      if (previewTitle) previewTitle.textContent = metaTitle.value || 'Titre de la page non défini';
+      if (titleCount) titleCount.textContent = metaTitle.value.length;
+    });
+
+    metaDesc?.addEventListener('input', () => {
+      if (previewDesc) previewDesc.textContent = metaDesc.value || 'Ajoutez une meta description pour améliorer le référencement...';
+      if (descCount) descCount.textContent = metaDesc.value.length;
+    });
+
+    ogTitle?.addEventListener('input', () => {
+      if (previewOgTitle) previewOgTitle.textContent = ogTitle.value || metaTitle?.value || 'Titre non défini';
+    });
+
+    ogDesc?.addEventListener('input', () => {
+      if (previewOgDesc) previewOgDesc.textContent = ogDesc.value || metaDesc?.value || 'Description non définie';
+    });
+  });
+
+  // ---- Save SEO data ----
+  document.querySelectorAll('.seo-edit-form').forEach(form => {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = form.querySelector('.save-seo-btn') as HTMLButtonElement;
+      const text = form.querySelector('.save-seo-text') as HTMLElement;
+      const spinner = form.querySelector('.save-seo-spinner') as HTMLElement;
+      const toast = form.querySelector('.save-seo-toast') as HTMLElement;
+
+      btn.disabled = true;
+      text.textContent = 'Enregistrement...';
+      spinner?.classList.remove('hidden');
+      toast?.classList.add('hidden');
+
+      const route = form.getAttribute('data-route') || '';
+      const data: Record<string, string> = {};
+      form.querySelectorAll('input[name], textarea[name]').forEach((field) => {
+        const f = field as HTMLInputElement;
+        data[f.name] = f.value;
+      });
+
+      try {
+        const res = await fetch('/api/admin/content', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ route, ...data }),
+        });
+
+        if (res.ok) {
+          toast?.classList.remove('hidden');
+          setTimeout(() => toast?.classList.add('hidden'), 3000);
+        } else {
+          const err = await res.json();
+          alert('Erreur: ' + (err.error || 'Échec de la sauvegarde'));
+        }
+      } catch {
+        alert('Erreur de connexion au serveur.');
+      } finally {
+        btn.disabled = false;
+        text.textContent = 'Enregistrer SEO';
+        spinner?.classList.add('hidden');
+      }
+    });
+  });
+</script>
